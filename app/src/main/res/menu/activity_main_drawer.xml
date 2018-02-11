@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/spelling_bee"
+            android:icon="@drawable/spellingbee_head"
+            android:title="Spelling Bee" />
+        <item
+            android:id="@+id/resource_centre"
+            android:icon="@drawable/resource_normal"
+            android:title="@string/scitech" />
+        <item
+            android:id="@+id/news_articles"
+            android:icon="@drawable/newsarticle_normal"
+            android:title="@string/news_articles" />
+        <item
+            android:id="@+id/entertainment"
+            android:icon="@drawable/entertainment_normal"
+            android:title="@string/entertainment" />
+        <item
+            android:id="@+id/sports"
+            android:icon="@drawable/sports_normal"
+            android:title="@string/sports" />
+        <item
+            android:id="@+id/games"
+            android:icon="@drawable/game_normal"
+            android:title="@string/games" />
+        <item
+            android:id="@+id/extra_curricular"
+            android:icon="@drawable/extra_activities_icon_tap"
+            android:title="@string/extra_curricular" />
+        <item
+            android:id="@+id/fitness_health"
+            android:icon="@drawable/fitness_normal"
+            android:title="@string/fitness_health" />
+        <item
+            android:id="@+id/food_nutration"
+            android:icon="@drawable/food_normal"
+            android:title="@string/food_nutration" />
+        <item
+            android:id="@+id/travel"
+            android:icon="@drawable/travel_normal"
+            android:title="@string/news" />
+        <item
+            android:id="@+id/personality"
+            android:icon="@drawable/personality_normal"
+            android:title="@string/personality" />
+        <item
+            android:id="@+id/literature"
+            android:icon="@drawable/literature_normal"
+            android:title="@string/literature" />
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/about_us"
+                android:icon="@drawable/about_us_normal"
+                android:title="@string/about_us" />
+            <item
+                android:id="@+id/terms_policy"
+                android:icon="@drawable/terms_and_policy_normal"
+                android:title="@string/terms_policy" />
+        </menu>
+    </item>
+
+</menu>
