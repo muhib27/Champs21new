@@ -3,53 +3,54 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/spelling_bee"
-            android:icon="@drawable/spellingbee_head"
-            android:title="Spelling Bee" />
-        <item
-            android:id="@+id/resource_centre"
-            android:icon="@drawable/resource_normal"
-            android:title="@string/scitech" />
-        <item
-            android:id="@+id/news_articles"
-            android:icon="@drawable/newsarticle_normal"
-            android:title="@string/news_articles" />
-        <item
-            android:id="@+id/entertainment"
-            android:icon="@drawable/entertainment_normal"
-            android:title="@string/entertainment" />
-        <item
-            android:id="@+id/sports"
-            android:icon="@drawable/sports_normal"
-            android:title="@string/sports" />
-        <item
-            android:id="@+id/games"
-            android:icon="@drawable/game_normal"
-            android:title="@string/games" />
-        <item
-            android:id="@+id/extra_curricular"
-            android:icon="@drawable/extra_activities_icon_tap"
-            android:title="@string/extra_curricular" />
-        <item
-            android:id="@+id/fitness_health"
-            android:icon="@drawable/fitness_normal"
-            android:title="@string/fitness_health" />
-        <item
-            android:id="@+id/food_nutration"
-            android:icon="@drawable/food_normal"
-            android:title="@string/food_nutration" />
-        <item
-            android:id="@+id/travel"
-            android:icon="@drawable/travel_normal"
+            android:id="@+id/news"
+            android:icon="@drawable/news"
             android:title="@string/news" />
         <item
-            android:id="@+id/personality"
-            android:icon="@drawable/personality_normal"
-            android:title="@string/personality" />
+            android:id="@+id/scitech"
+            android:icon="@drawable/scitech"
+            android:title="@string/scitech" />
         <item
-            android:id="@+id/literature"
-            android:icon="@drawable/literature_normal"
-            android:title="@string/literature" />
+            android:id="@+id/apps_games"
+            android:icon="@drawable/apps_games"
+            android:title="@string/apps_games" />
+
+        <item
+            android:id="@+id/champion"
+            android:icon="@drawable/champion"
+            android:title="@string/champion" />
+        <item
+            android:id="@+id/life_style"
+            android:icon="@drawable/life_style"
+            android:title="@string/life_style" />
+        <item
+            android:id="@+id/resource_center"
+            android:icon="@drawable/resource_center"
+            android:title="@string/resource_center" />
+        <item
+            android:id="@+id/sports"
+            android:icon="@drawable/sports"
+            android:title="@string/sports" />
+        <item
+            android:id="@+id/entertainment"
+            android:icon="@drawable/entertainment"
+            android:title="@string/entertainment" />
+        <item
+            android:id="@+id/video"
+            android:icon="@drawable/video"
+            android:title="@string/video" />
+        <!--<item-->
+            <!--android:id="@+id/food_nutration"-->
+            <!--android:icon="@drawable/food_normal"-->
+            <!--android:title="@string/food_nutration" />-->
+        <!--<item-->
+            <!--android:id="@+id/personality"-->
+            <!--android:icon="@drawable/personality_normal"-->
+            <!--android:title="@string/personality" />-->
+        <!--<item-->
+            <!--android:id="@+id/literature"-->
+            <!--android:icon="@drawable/literature_normal"-->
+            <!--android:title="@string/literature" />-->
     </group>
 
     <item android:title="Communicate">

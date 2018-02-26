@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Champs21</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">""</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -13,9 +13,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="resource_centre">Resource Centre</string>
     <string name="news_articles"><![CDATA[News & Articles]]></string>
-    <string name="entertainment">Entertainment</string>
-    <string name="sports">Sports</string>
-    <string name="games">Games</string>
+
+
+
     <string name="extra_curricular">Extra Curricular</string>
     <string name="fitness_health"><![CDATA[Fitness & Health]]></string>
     <string name="food_nutration"><![CDATA[Food & Nutration]]></string>
@@ -27,6 +27,14 @@
 
     <string name="news">খবর</string>
     <string name="scitech">বিজ্ঞানপ্রযুক্তি</string>
+    <string name="apps_games">অ্যাপস ও গেইমস</string>
+    <string name="champion">চ্যাম্পিয়ন</string>
+    <string name="life_style">জীবনযাত্রা</string>
+    <string name="resource_center">রিসোর্স সেন্টার </string>
+    <string name="sports">খেলাধুলা </string>
+    <string name="entertainment">বিনোদন </string>
+    <string name="video">ভিডিও </string>
+    <string name="sample_text">Sample</string>
     <!--<string name="fitness_health"><![CDATA[Fitness & Health]]></string>-->
     <!--<string name="food_nutration"><![CDATA[Food & Nutration]]></string>-->
     <!--<string name="travel">Travel</string>-->
@@ -34,6 +42,14 @@
     <!--<string name="literature">Literature</string>-->
     <!--<string name="about_us">About Us</string>-->
     <!--<string name="terms_policy"><![CDATA[Terms & Policy]]></string>-->
+
+    <string name="my_api_key">ec01f8c2eb6ac402f2ca026dc2d9b8fd</string>
+    <string name="error_msg">Sorry! Couldn\'t fetch movies.</string>
+    <string name="btn_retry">Retry</string>
+    <string name="error_msg_no_internet">Not connected to internet</string>
+    <string name="error_msg_timeout">The server took too long to respond</string>
+    <string name="error_msg_unknown">An unexpected error occurred</string>
+    <string name="tap_to_reload">Tap to reload</string>
 
 
 </resources>

@@ -1,6 +1,7 @@
 package com.champs21.schoolapp.activity;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
@@ -26,27 +27,72 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.fragment.MainFragment;
+import com.champs21.schoolapp.fragment.NewsFragment;
+import com.champs21.schoolapp.fragment.PaginationTestFragment;
+import com.champs21.schoolapp.model.CategoryModel;
+
+import com.champs21.schoolapp.model.CategoryModelTest;
+import com.champs21.schoolapp.model.Result;
+import com.champs21.schoolapp.model.TopRatedMovies;
+
+import com.champs21.schoolapp.retrofit.RetrofitApiClient;
+import com.champs21.schoolapp.utils.AppConstant;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.reflect.TypeToken;
+
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import io.fabric.sdk.android.Fabric;
+//import io.reactivex.Observer;
+//import io.reactivex.android.schedulers.AndroidSchedulers;
+//import io.reactivex.disposables.Disposable;
+//import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.champs21.schoolapp.R.id.webView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private DrawerLayout drawer;
+    public static DrawerLayout drawer;
     public static ActionBarDrawerToggle toggle;
     Toolbar toolbar;
     NavigationView navigationView;
     MainFragment mainFragment;
+    private List<CategoryModel> listTopic;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainFragment = new MainFragment();
-//        showToolbar();
-        gotoMainFragment();
+        Fabric.with(this, new Crashlytics());
+        //mainFragment = new MainFragment();
+        showToolbar();
+        //gotoPaginationTestFragment();
+        listTopic = new ArrayList<>();
+//        menuiApiCall();
+
+        Bundle bundle = new Bundle();
+        bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.NEWS);
+        gotoNewsFragment(bundle);
+//        gotoMainFragment(bundle);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
 //
@@ -57,62 +103,254 @@ public class MainActivity extends AppCompatActivity
 //        drawer.setDrawerListener(toggle);
 //        toggle.syncState();
 
-//        navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-//        navigationView.setItemIconTintList(null);
-//
-//        NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
-//        navMenuView.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setItemIconTintList(null);
+
+        NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
+        navMenuView.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
     }
 
-    private void gotoMainFragment() {
-       // MainFragment mainFragment = new MainFragment();
+    private void menuiApiCall() {
+        showProgress();
+        HashMap<String, String> params = new HashMap<>();
+        listTopic.clear();
+        //params.put("message", "message");
+
+//        RetrofitApiClient.getApiInterface().getTopics(params)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(response -> {
+//                            if (response.code() == 200) {
+//                                //Log.d(Constant.tag, "Submit ok");
+//                                hideProgress();
+//
+//                            } else {
+//
+//                               // Log.d(Constant.tag, "Submit response code " + response.code());
+//                            }
+//                        },
+//                        error -> {
+//                            hideProgress();
+//                           // Log.d(Constant.tag, "Error submit task:", error);
+//                        },
+//                        () -> {
+//                            hideProgress();
+//
+//                        }
+//                );
+//        Call<List<CategoryModel>> call = RetrofitApiClient.getApiInterface().getTopicsList(142, 2);
+//        call.enqueue(new Callback<List<CategoryModel>>() {
+//            @Override
+//            public void onResponse(Call<List<CategoryModel>> call, Response<List<CategoryModel>> response) {
+//                hideProgress();
+//
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<CategoryModel>> call, Throwable t) {
+//                hideProgress();
+//            }
+//        });
+//        call.enqueue(new Callback<List<CategoryModel>>() {
+//            @Override
+//            public void onResponse(Call<List<CategoryModel>> call, Response<Response<List<CategoryModel>> response) {
+//                hideProgress();
+//                List<CategoryModel> list = response.body();
+//
+//                for(int i =0; i< list.size(); i++)
+//                {
+//
+//                }
+//
+//                Toast.makeText(getApplicationContext(), ""+response.body(), Toast.LENGTH_SHORT).show();
+//            }
+//
+//
+//
+//            @Override
+//            public void onFailure(Call<List<CategoryModel>> call, Throwable t) {
+//                Log.d("msg", ""+t);
+//            }
+//        });
+
+
+        RetrofitApiClient.getApiInterface().getTopics(142, 2).enqueue(new Callback<JsonElement>() {
+            @Override
+            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+                if (response.code() == 200) {
+                                //Log.d(Constant.tag, "Submit ok");
+                                hideProgress();
+                    JsonArray jsonArray = response.body().getAsJsonArray();
+//                    try {
+//                        JSONArray jsonarray = new JSONArray(jsonArray.toString());
+//                        for (int i = 0; i < jsonarray.length(); i++) {
+//                            JSONObject jsonobject = jsonarray.getJSONObject(i);
+//                            CategoryModel categoryModel = new CategoryModel(jsonobject.getString("id"), jsonobject.getString("title"),jsonobject.getString("link"),jsonobject.getString("excerpt"));
+//                           listTopic.add(categoryModel);
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+
+//                    jsonArray.size();
+//                    Type listType = new TypeToken<ArrayList<CategoryModel>>(){}.getType();
+//                    for(int i =0; i<jsonArray.size(); i++)
+//                    {
+//                        CategoryModel categoryModel =GsonParser.getInstance().parseServerResponseP(jsonArray);
+//                    }
+                   // CategoryModel categoryModel = new CategoryModel(response)
+                    //ArrayList<CategoryModel> list = response.body();
+//                    Wrapper modelContainer = GsonParser.getInstance()
+//                            .parseServerResponse2(response.body());
+//                    if(modelContainer.getStatus().getCode()==200) {
+//
+//                        JsonArray jsonArray = modelContainer.getData().getAsJsonArray();
+                        listTopic = parseTopicList(jsonArray.toString());
+//                    }
+
+
+                            } else {
+
+                               // Log.d(Constant.tag, "Submit response code " + response.code());
+                            }
+            }
+
+            @Override
+            public void onFailure(Call<JsonElement> call, Throwable t) {
+                hideProgress();
+            }
+        });
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(response -> {
+//                            if (response.code() == 200) {
+//                                //Log.d(Constant.tag, "Submit ok");
+//                                hideProgress();
+//
+//
+//                            } else {
+//
+//                               // Log.d(Constant.tag, "Submit response code " + response.code());
+//                            }
+//                        },
+//                        error -> {
+//                            hideProgress();
+//                           // Log.d(Constant.tag, "Error submit task:", error);
+//                        },
+//                        () -> {
+//                            hideProgress();
+//
+//                        }
+//                );
+
+
+//                .subscribe(new Observer<Response<CommonApiResponse>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Response<CommonApiResponse> value) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+    }
+
+    private ArrayList<Result> fetchResults(Response<TopRatedMovies> response) {
+        TopRatedMovies topRatedMovies = response.body();
+        return topRatedMovies.getResults();
+    }
+
+    private List<CategoryModel> parseTopicList(String object) {
+
+        List<CategoryModel> tags = new ArrayList<CategoryModel>();
+        Type listType = new TypeToken<List<CategoryModel>>() {}.getType();
+        tags = new Gson().fromJson(object, listType);
+        return tags;
+    }
+
+    private ProgressDialog progressDialog;
+
+    public void showProgress() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Please wait ...");
+        progressDialog.show();
+    }
+
+    public void hideProgress() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
+
+    private void gotoMainFragment(Bundle bundle) {
+        // MainFragment mainFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+        mainFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, mainFragment, "mainFragment");
         transaction.commit();
     }
 
-//    private void showToolbar() {
-//        toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        //mActionBar = getSupportActionBar();
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//
-//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-////        toggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
-//        //drawer.setDrawerListener(toggle);
-//        drawer.addDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        final View.OnClickListener originalToolbarListener = toggle.getToolbarNavigationClickListener();
-//        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-//            @Override
-//            public void onBackStackChanged() {
-//                int backStack = getSupportFragmentManager().getBackStackEntryCount();
-//                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-//                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//                    toggle.setDrawerIndicatorEnabled(false);
-//                    toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            getSupportFragmentManager().popBackStack();
-//
-//                        }
-//                    });
-//                } else {
-//                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-//                    toggle.setDrawerIndicatorEnabled(true);
-//                    toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
-//                    toggle.setToolbarNavigationClickListener(originalToolbarListener);
-////                    toggle.syncState();
-//                }
-//            }
-//        });
-//    }
+    private void gotoPaginationTestFragment() {
+        PaginationTestFragment paginationTestFragment = new PaginationTestFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.main_acitivity_container, paginationTestFragment, "paginationTestFragment");
+        transaction.commit();
+    }
 
+    private void showToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //mActionBar = getSupportActionBar();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        toggle.getDrawerArrowDrawable().setColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        //drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        final View.OnClickListener originalToolbarListener = toggle.getToolbarNavigationClickListener();
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                int backStack = getSupportFragmentManager().getBackStackEntryCount();
+                if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    toggle.setDrawerIndicatorEnabled(false);
+                    toggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            getSupportFragmentManager().popBackStack();
+
+                        }
+                    });
+                } else {
+                    getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                    toggle.setDrawerIndicatorEnabled(true);
+                    toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+                    toggle.setToolbarNavigationClickListener(originalToolbarListener);
+//                    toggle.syncState();
+                }
+            }
+        });
+    }
+//
 //    @Override
 //    public void onBackPressed() {
 //        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -125,7 +363,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        MainFragment mainFragment = (MainFragment)getSupportFragmentManager().findFragmentByTag("mainFragment");
+        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("mainFragment");
         if (mainFragment != null && mainFragment.canGoBack()) {
             this.mainFragment.goBack();
         } else {
@@ -179,38 +417,61 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
+        Bundle bundle = new Bundle();
+
         // Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.spelling_bee) {
-//            // Handle the camera action
-//        } else if (id == R.id.resource_centre) {
-//
-//        } else if (id == R.id.news_articles) {
-//
-//        } else if (id == R.id.entertainment) {
-//
-//        } else if (id == R.id.sports) {
-//
-//        } else if (id == R.id.games) {
-//
-//        } else if (id == R.id.extra_curricular) {
-//
-//        } else if (id == R.id.fitness_health) {
-//
-//        } else if (id == R.id.food_nutration) {
-//
-//        } else if (id == R.id.travel) {
+        int id = item.getItemId();
+
+        if (id == R.id.news) {
+            // Handle the camera action
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.NEWS);
+           // gotoMainFragment(bundle);
+            gotoNewsFragment(bundle);
+        } else if (id == R.id.scitech) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SCITECH);
+            //gotoPaginationTestFragment();
+            gotoNewsFragment(bundle);
+
+        } else if (id == R.id.apps_games) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.APPS_GAMES);
+            gotoNewsFragment(bundle);
+        } else if (id == R.id.champion) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.CHAMPION);
+            gotoNewsFragment(bundle);
+        } else if (id == R.id.life_style) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.LIFE_STYLE);
+            gotoNewsFragment(bundle);
+        } else if (id == R.id.resource_center) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.RESOURCE_CENTER);
+            gotoNewsFragment(bundle);
+        } else if (id == R.id.sports) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SPORTS);
+            gotoNewsFragment(bundle);
+
+        } else if (id == R.id.entertainment) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.ENTERTAINMENT);
+            gotoNewsFragment(bundle);
+
+        } else if (id == R.id.video) {
+            bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.VIDEO);
+            gotoNewsFragment(bundle);
+
+        }
+//        else if (id == R.id.travel) {
 //
 //        } else if (id == R.id.personality) {
 //
 //        } else if (id == R.id.literature) {
 //
-//        } else if (id == R.id.about_us) {
-//
-//        } else if (id == R.id.terms_policy) {
-//
 //        }
+        else if (id == R.id.about_us) {
+            bundle.putString(AppConstant.SELECTED_ITEM, AppConstant.ABOUT_US);
+
+        } else if (id == R.id.terms_policy) {
+            bundle.putString(AppConstant.SELECTED_ITEM, AppConstant.TERMS_POLICY);
+
+        }
+
 
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -218,24 +479,33 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-        @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            MainFragment mainFragment = (MainFragment)getSupportFragmentManager().findFragmentByTag("mainFragment");
-            switch (keyCode) {
-                case KeyEvent.KEYCODE_BACK:
-
-                    if (mainFragment.canGoBack()) {
-                        mainFragment.goBack();
-                    } else {
-                        finish();
-                    }
-                    return true;
-            }
-
-        }
-        return super.onKeyDown(keyCode, event);
+    private void gotoNewsFragment(Bundle bundle) {
+        NewsFragment newsFragment = new NewsFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        newsFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, newsFragment, "newsFragment");
+        transaction.commit();
     }
+
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+//            MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("mainFragment");
+//            switch (keyCode) {
+//                case KeyEvent.KEYCODE_BACK:
+//
+//                    if (mainFragment.canGoBack()) {
+//                        mainFragment.goBack();
+//                    } else {
+//                        finish();
+//                    }
+//                    return true;
+//            }
+//
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
 
 }

@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <!--<android.support.design.widget.NavigationView-->
-        <!--android:id="@+id/nav_view"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_gravity="start"-->
-        <!--android:fitsSystemWindows="true"-->
-        <!--app:headerLayout="@layout/nav_header_main"-->
-        <!--app:menu="@menu/activity_main_drawer" />-->
+    <android.support.design.widget.NavigationView
+        android:id="@+id/nav_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header_main"
+        app:menu="@menu/activity_main_drawer" />
         <!--<android.support.v4.widget.NestedScrollView-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent"-->
@@ -34,7 +34,7 @@
 
                 <!--<android.support.design.widget.NavigationView-->
                     <!--android:id="@+id/nav_view"-->
-                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
                     <!--app:elevation="0dp"-->
                     <!--app:theme="@style/NavigationTheme"-->
@@ -44,14 +44,14 @@
 
                     <!--</android.support.design.widget.NavigationView>-->
 
-                <!--&lt;!&ndash;<LinearLayout&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:id="@+id/spacer_to_bottom"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_height="0dp"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
-                    <!--&lt;!&ndash;android:orientation="vertical" />&ndash;&gt;-->
+                <!--<LinearLayout-->
+                    <!--android:id="@+id/spacer_to_bottom"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="0dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:orientation="vertical" />-->
 
-                <!--&lt;!&ndash;<include layout="@layout/nav_footer_main"></include>&ndash;&gt;-->
+                <!--<include layout="@layout/nav_footer_main"></include>-->
             <!--</LinearLayout>-->
         <!--</android.support.v4.widget.NestedScrollView>-->
         <!--</android.support.design.widget.NavigationView>-->

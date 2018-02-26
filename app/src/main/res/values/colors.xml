@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--<color name="colorPrimary">#000000</color>-->
+    <color name="colorPrimary">#fcefff</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorPrimary">#DC143C</color>
+    <!--<color name="colorPrimary">#DC143C</color>-->
     <color name="colorPrimaryDark">#000000</color>
     <!--<color name="colorPrimary">#3F51B5</color>-->
     <!--<color name="colorPrimaryDark">#303F9F</color>e5e5e5-->
     <color name="colorAccent">#FF4081</color>
     <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="colorPrimary_light">#40DC143C</color>
+
+
+    <color name="background">#EFEFEF</color>
+    <color name="placeholder_grey">#AAADC4</color>
+    <color name="placeholder_grey_20">#33AAADC4</color>
 </resources>

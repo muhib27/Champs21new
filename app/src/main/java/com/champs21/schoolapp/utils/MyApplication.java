@@ -2,6 +2,7 @@ package com.champs21.schoolapp.utils;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 //import app.modeltest.com.modeltest.retrofit.ApiInterface;
 //import io.realm.Realm;
@@ -17,6 +18,12 @@ public class MyApplication extends Application {
     private static MyApplication mInstance;
     private static Context context;
     //ApiInterface apiInterface;
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+    }
 
     public static MyApplication getInstance() {
         return mInstance;
