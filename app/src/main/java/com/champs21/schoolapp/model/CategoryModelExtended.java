@@ -4,18 +4,16 @@ package com.champs21.schoolapp.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-public class CategoryModel {
-    //    @SerializedName("code")
+public class CategoryModelExtended {
+//    @SerializedName("code")
 //    @Expose
 //    private String code;
 //
     @SerializedName("_embedded")
     @Expose
-    private Embedded embedded;
+    private Object embedded;
 
     @SerializedName("id")
     @Expose
@@ -38,7 +36,7 @@ public class CategoryModel {
     @Expose
     private ExcerptModel excerptModel;
 
-    public CategoryModel(String id, String link, Title title, Content content, ExcerptModel excerptModel) {
+    public CategoryModelExtended(String id, String link, Title title, Content content, ExcerptModel excerptModel) {
         this.id = id;
         this.link = link;
         this.title = title;
@@ -46,7 +44,7 @@ public class CategoryModel {
         this.excerptModel = excerptModel;
     }
 
-    public CategoryModel() {
+    public CategoryModelExtended() {
     }
 
     public String getId() {
@@ -90,19 +88,11 @@ public class CategoryModel {
         this.content = content;
     }
 
-//    public Object getEmbedded() {
-//        return embedded;
-//    }
-//
-//    public void setEmbedded(Object embedded) {
-//        this.embedded = embedded;
-//    }
-
-    public Embedded getEmbedded() {
+    public Object getEmbedded() {
         return embedded;
     }
 
-    public void setEmbedded(Embedded embedded) {
+    public void setEmbedded(Object embedded) {
         this.embedded = embedded;
     }
 }

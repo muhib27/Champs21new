@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView
+    android:id="@+id/cardView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +11,7 @@
     android:layout_marginLeft="@dimen/activity_margin_half"
     android:layout_marginRight="@dimen/activity_margin_half"
     android:layout_marginStart="@dimen/activity_margin_half"
-    app:cardBackgroundColor="@color/placeholder_grey"
+    app:cardBackgroundColor="@color/colorPrimaryRed"
     app:cardCornerRadius="3dp"
     app:cardPreventCornerOverlap="false">
 

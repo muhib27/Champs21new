@@ -93,30 +93,30 @@ public class NewsFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         HashMap<String, String> params = new HashMap<>();
         listTopic.clear();
 
-        RetrofitApiClient.getApiInterface().getTopics(selected, 5).enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                if (response.code() == 200) {
-                    //Log.d(Constant.tag, "Submit ok");
-                    hideProgress();
-                    JsonArray jsonArray = response.body().getAsJsonArray();
-
-                    listTopic = parseTopicList(jsonArray.toString());
-
-                    singleAdapter.setData(listTopic);
-                    singleAdapter.notifyDataSetChanged();
-
-                } else {
-
-                    // Log.d(Constant.tag, "Submit response code " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonElement> call, Throwable t) {
-                hideProgress();
-            }
-        });
+//        RetrofitApiClient.getApiInterface().getTopics(selected, 5, 6).enqueue(new Callback<JsonElement>() {
+//            @Override
+//            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+//                if (response.code() == 200) {
+//                    //Log.d(Constant.tag, "Submit ok");
+//                    hideProgress();
+//                    JsonArray jsonArray = response.body().getAsJsonArray();
+//
+//                    listTopic = parseTopicList(jsonArray.toString());
+//
+//                    singleAdapter.setData(listTopic);
+//                    singleAdapter.notifyDataSetChanged();
+//
+//                } else {
+//
+//                    // Log.d(Constant.tag, "Submit response code " + response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonElement> call, Throwable t) {
+//                hideProgress();
+//            }
+//        });
 
     }
 

@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.champs21.schoolapp.activity.MainActivity">
+    tools:context="com.champs21.schoolapp.fragment.InitialFragment">
 
+    <!-- TODO: Update blank fragment layout -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/main_recycler"
         android:layout_width="match_parent"
@@ -14,12 +13,12 @@
         android:paddingBottom="@dimen/activity_margin_half"
         android:paddingTop="@dimen/activity_margin_half"/>
 
-    <ProgressBar
-        android:id="@+id/main_progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+    <!--<ProgressBar-->
+        <!--android:id="@+id/main_progress"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"/>-->
 
-    <include layout="@layout/error_layout"/>
+    <!--<include layout="@layout/error_layout"/>-->
 
 </FrameLayout>

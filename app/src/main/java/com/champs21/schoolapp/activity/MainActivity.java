@@ -30,11 +30,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.champs21.schoolapp.R;
+import com.champs21.schoolapp.fragment.InitialFragment;
 import com.champs21.schoolapp.fragment.MainFragment;
 import com.champs21.schoolapp.fragment.NewsFragment;
+import com.champs21.schoolapp.fragment.PaginationSingleFragment;
 import com.champs21.schoolapp.fragment.PaginationTestFragment;
 import com.champs21.schoolapp.model.CategoryModel;
 
+import com.champs21.schoolapp.model.CategoryModelExtended;
 import com.champs21.schoolapp.model.CategoryModelTest;
 import com.champs21.schoolapp.model.Result;
 import com.champs21.schoolapp.model.TopRatedMovies;
@@ -58,10 +61,14 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
-//import io.reactivex.Observer;
+import io.reactivex.Observer;
 //import io.reactivex.android.schedulers.AndroidSchedulers;
-//import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.Disposable;
 //import io.reactivex.schedulers.Schedulers;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+import okhttp3.Headers;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -76,22 +83,34 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
     MainFragment mainFragment;
     private List<CategoryModel> listTopic;
+    public static boolean apiRunning = true;
+
+    private int[] menuArray = {-1, AppConstant.NEWS, AppConstant.SCITECH, AppConstant.APPS_GAMES, AppConstant.CHAMPION, AppConstant.LIFE_STYLE, AppConstant.RESOURCE_CENTER, AppConstant.SPORTS, AppConstant.ENTERTAINMENT, AppConstant.VIDEO};
+    private static int si = 0;
+    public static ArrayList<CategoryModel> results = new ArrayList<>();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        si = 0;
+        listTopic = new ArrayList<>();
+        results.clear();
+        showToolbar();
+        for (int i = 0; i < menuArray.length; i++)
+            callNewsApiFirst(menuArray[i], i);
         Fabric.with(this, new Crashlytics());
         //mainFragment = new MainFragment();
-        showToolbar();
         //gotoPaginationTestFragment();
-        listTopic = new ArrayList<>();
+
 //        menuiApiCall();
 
-        Bundle bundle = new Bundle();
-        bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.NEWS);
-        gotoNewsFragment(bundle);
+//        Bundle bundle = new Bundle();
+//        bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.NEWS);
+        //gotoInitialFragment();
+        //gotoPaginationTest(bundle);
+//        gotoNewsFragment(bundle);
 //        gotoMainFragment(bundle);
 //        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(toolbar);
@@ -109,6 +128,166 @@ public class MainActivity extends AppCompatActivity
 
         NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
         navMenuView.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
+    }
+
+
+    private void callNewsApiFirst(int selected, final int callNo) {
+        if (selected == -1) {
+            RetrofitApiClient.getApiInterface().getLatest(5, 1)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Response<List<CategoryModel>>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(Response<List<CategoryModel>> value) {
+                            if(value.code()==200){
+                                List<CategoryModel> singleList = value.body();
+                                singleList.size();
+                                results.addAll(singleList);
+                                results.add(singleList.get(4));
+                                si++;
+
+                            }
+                        }
+
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+//            RetrofitApiClient.getApiInterface().getLatest(5, 1).enqueue(new Callback<JsonElement>() {
+//                @Override
+//                public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+//                    if (response.code() == 200) {
+//
+//                        //Log.d(Constant.tag, "Submit ok");
+//                        Headers headers = response.headers();
+//
+//                        JsonArray jsonArray = response.body().getAsJsonArray();
+//                        List<CategoryModel> singleList = parseTopicList(jsonArray.toString());
+////                    for (int i = 0; i < singleList.size(); i++)
+//                        results.addAll(singleList);
+//                        results.add(singleList.get(4));
+//                        si++;
+//
+////                        if (callNo < (menuArray.length) && si > 9) {
+////                        callNewsApiFirst(menuArray[si], si);
+////                    else  {
+////                        progressBar.setVisibility(View.GONE);
+////                        adapter.addAllData(results);
+////                            apiRunning = false;
+////
+////                        }
+//                        //}
+//
+////                    if (currentOffst < TOTAL_ITEM) adapter.addLoadingFooter();
+////                    else isLastPage = true;
+//
+//                    } else {
+//
+//                        // Log.d(Constant.tag, "Submit response code " + response.code());
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<JsonElement> call, Throwable t) {
+//
+//                    // Log.d(Constant.tag, "Error submit task:", error);
+//                    //adapter.showRetry(true, fetchErrorMessage(t));
+//                }
+//            });
+        } else {
+//            RetrofitApiClient.getApiInterface().getTopics(selected, 5, 1).enqueue(new Callback<JsonElement>() {
+//                @Override
+//                public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+//                    if (response.code() == 200) {
+//
+//                        //Log.d(Constant.tag, "Submit ok");
+//                        Headers headers = response.headers();
+//
+//                        JsonArray jsonArray = response.body().getAsJsonArray();
+//                        List<CategoryModel> singleList = parseTopicList(jsonArray.toString());
+////                    for (int i = 0; i < singleList.size(); i++)
+//                        results.addAll(singleList);
+//                        results.add(singleList.get(4));
+//                        si++;
+//
+//                        if (callNo < (menuArray.length) && si > 9) {
+////                        callNewsApiFirst(menuArray[si], si);
+////                    else  {
+////                        progressBar.setVisibility(View.GONE);
+////                        adapter.addAllData(results);
+//                            apiRunning = false;
+//                            gotoInitialFragment();
+//
+//
+//                        }
+//                        //}
+//
+////                    if (currentOffst < TOTAL_ITEM) adapter.addLoadingFooter();
+////                    else isLastPage = true;
+//
+//                    } else {
+//
+//                        // Log.d(Constant.tag, "Submit response code " + response.code());
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<JsonElement> call, Throwable t) {
+//
+//                    // Log.d(Constant.tag, "Error submit task:", error);
+//                    //adapter.showRetry(true, fetchErrorMessage(t));
+//                }
+//            });
+
+
+            RetrofitApiClient.getApiInterface().getTopics(selected, 5, 1)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Response<List<CategoryModel>>>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+
+                        }
+
+                        @Override
+                        public void onNext(Response<List<CategoryModel>> value) {
+
+                            if(value.code()==200){
+                                List<CategoryModel> singleList = value.body();
+                                singleList.size();
+                                results.addAll(singleList);
+                                results.add(singleList.get(4));
+                                si++;
+                                gotoInitialFragment();
+
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+
+                        }
+
+                        @Override
+                        public void onComplete() {
+
+                        }
+                    });
+
+        }
+
     }
 
     private void menuiApiCall() {
@@ -175,13 +354,13 @@ public class MainActivity extends AppCompatActivity
 //        });
 
 
-        RetrofitApiClient.getApiInterface().getTopics(142, 2).enqueue(new Callback<JsonElement>() {
-            @Override
-            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
-                if (response.code() == 200) {
-                                //Log.d(Constant.tag, "Submit ok");
-                                hideProgress();
-                    JsonArray jsonArray = response.body().getAsJsonArray();
+//        RetrofitApiClient.getApiInterface().getTopics(142, 2, 6).enqueue(new Callback<JsonElement>() {
+//            @Override
+//            public void onResponse(Call<JsonElement> call, Response<JsonElement> response) {
+//                if (response.code() == 200) {
+//                    //Log.d(Constant.tag, "Submit ok");
+//                    hideProgress();
+//                    JsonArray jsonArray = response.body().getAsJsonArray();
 //                    try {
 //                        JSONArray jsonarray = new JSONArray(jsonArray.toString());
 //                        for (int i = 0; i < jsonarray.length(); i++) {
@@ -199,28 +378,28 @@ public class MainActivity extends AppCompatActivity
 //                    {
 //                        CategoryModel categoryModel =GsonParser.getInstance().parseServerResponseP(jsonArray);
 //                    }
-                   // CategoryModel categoryModel = new CategoryModel(response)
+                    // CategoryModel categoryModel = new CategoryModel(response)
                     //ArrayList<CategoryModel> list = response.body();
 //                    Wrapper modelContainer = GsonParser.getInstance()
 //                            .parseServerResponse2(response.body());
 //                    if(modelContainer.getStatus().getCode()==200) {
 //
 //                        JsonArray jsonArray = modelContainer.getData().getAsJsonArray();
-                        listTopic = parseTopicList(jsonArray.toString());
-//                    }
-
-
-                            } else {
-
-                               // Log.d(Constant.tag, "Submit response code " + response.code());
-                            }
-            }
-
-            @Override
-            public void onFailure(Call<JsonElement> call, Throwable t) {
-                hideProgress();
-            }
-        });
+//                    listTopic = parseTopicList(jsonArray.toString());
+////                    }
+//
+//
+//                } else {
+//
+//                    // Log.d(Constant.tag, "Submit response code " + response.code());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<JsonElement> call, Throwable t) {
+//                hideProgress();
+//            }
+//        });
 //                .subscribeOn(Schedulers.io())
 //                .observeOn(AndroidSchedulers.mainThread())
 //                .subscribe(response -> {
@@ -276,7 +455,8 @@ public class MainActivity extends AppCompatActivity
     private List<CategoryModel> parseTopicList(String object) {
 
         List<CategoryModel> tags = new ArrayList<CategoryModel>();
-        Type listType = new TypeToken<List<CategoryModel>>() {}.getType();
+        Type listType = new TypeToken<List<CategoryModel>>() {
+        }.getType();
         tags = new Gson().fromJson(object, listType);
         return tags;
     }
@@ -363,13 +543,18 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("mainFragment");
-        if (mainFragment != null && mainFragment.canGoBack()) {
-            this.mainFragment.goBack();
-        } else {
+//        MainFragment mainFragment = (MainFragment) getSupportFragmentManager().findFragmentByTag("mainFragment");
+//        if (mainFragment != null && mainFragment.canGoBack()) {
+//            this.mainFragment.goBack();
+//        }
+//        if (apiRunning) {
+//            // this block disable back button
+//            return;
+//
+//        } else {
             // The back key event only counts if we execute super.onBackPressed();
             super.onBackPressed();
-        }
+//        }
     }
 
     @Override
@@ -425,36 +610,45 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.news) {
             // Handle the camera action
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.NEWS);
-           // gotoMainFragment(bundle);
-            gotoNewsFragment(bundle);
+            // gotoMainFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
         } else if (id == R.id.scitech) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SCITECH);
             //gotoPaginationTestFragment();
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
 
         } else if (id == R.id.apps_games) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.APPS_GAMES);
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
         } else if (id == R.id.champion) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.CHAMPION);
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
         } else if (id == R.id.life_style) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.LIFE_STYLE);
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
         } else if (id == R.id.resource_center) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.RESOURCE_CENTER);
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
         } else if (id == R.id.sports) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SPORTS);
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
 
         } else if (id == R.id.entertainment) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.ENTERTAINMENT);
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
 
         } else if (id == R.id.video) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.VIDEO);
-            gotoNewsFragment(bundle);
+//            gotoNewsFragment(bundle);
+            gotoPaginationTest(bundle);
 
         }
 //        else if (id == R.id.travel) {
@@ -473,7 +667,6 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -487,6 +680,25 @@ public class MainActivity extends AppCompatActivity
         transaction.replace(R.id.main_acitivity_container, newsFragment, "newsFragment");
         transaction.commit();
     }
+
+    private void gotoPaginationTest(Bundle bundle) {
+        PaginationSingleFragment paginationSingleFragment = new PaginationSingleFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        paginationSingleFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, paginationSingleFragment, "paginationSingleFragment").addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void gotoInitialFragment() {
+        InitialFragment initialFragment = new InitialFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+//        paginationSingleFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, initialFragment, "initialFragment");
+        transaction.commit();
+    }
+
 
 //    @Override
 //    public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -509,3 +721,30 @@ public class MainActivity extends AppCompatActivity
 
 
 }
+
+
+//
+//RetrofitApiClient.getApiInterface().getTopics(selected, 5, 1)
+//        .subscribeOn(Schedulers.io())
+//        .observeOn(AndroidSchedulers.mainThread())
+//        .subscribe(new Observer<Response>() {
+//@Override
+//public void onSubscribe(Disposable d) {
+//
+//        }
+//
+//@Override
+//public void onNext(Response value) {
+//
+//        }
+//
+//@Override
+//public void onError(Throwable e) {
+//
+//        }
+//
+//@Override
+//public void onComplete() {
+//
+//        }
+//        });

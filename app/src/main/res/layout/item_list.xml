@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -33,8 +34,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="@dimen/activity_margin"
+        android:layout_gravity="top"
+        android:layout_marginTop="@dimen/activity_margin_half"
         android:background="@android:color/transparent"
         android:orientation="vertical"
         android:paddingBottom="@dimen/activity_margin"
@@ -56,31 +57,40 @@
         <!--android:maxLines="1"-->
         <!--android:textStyle="bold"-->
         <!--tools:text="2009 | EN" />-->
-        <TextView
-            android:id="@+id/menuOptions"
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginLeft="@dimen/size_10dp"
-            android:layout_marginStart="@dimen/activity_margin_content"
-            android:background="@drawable/popup_menu_icon"
-            android:gravity="end"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:textAppearance="?android:textAppearanceLarge" />
-
-        <TextView
-            android:id="@+id/movie_title"
-            style="@style/TextAppearance.AppCompat.Subhead"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin_content"
-            android:layout_marginStart="@dimen/activity_margin_content"
-            android:layout_marginTop="@dimen/activity_margin_quarter"
-            android:maxLines="1"
-            tools:text="Movie Title" />
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_weight=".9"
+                android:id="@+id/movie_title"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_margin_content"
+                android:layout_marginStart="@dimen/activity_margin_content"
+                android:layout_marginTop="@dimen/activity_margin_quarter"
+                android:maxLines="2"
+                tools:text="Movie Title" />
+
+            <TextView
+                android:layout_weight=".1"
+                android:id="@+id/menuOptions"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10dp"
+                android:layout_marginStart="@dimen/activity_margin_content"
+                android:background="@drawable/popup_menu_icon"
+                android:textAppearance="?android:textAppearanceLarge" />
+
+        </LinearLayout>
 
         <TextView
+            android:textColor="@color/black"
             android:id="@+id/movie_desc"
             style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="match_parent"
