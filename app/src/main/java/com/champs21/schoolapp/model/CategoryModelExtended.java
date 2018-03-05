@@ -13,7 +13,7 @@ public class CategoryModelExtended {
 //
     @SerializedName("_embedded")
     @Expose
-    private Object embedded;
+    private Embedded embedded;
 
     @SerializedName("id")
     @Expose
@@ -88,11 +88,11 @@ public class CategoryModelExtended {
         this.content = content;
     }
 
-    public Object getEmbedded() {
+    public Embedded getEmbedded() {
         return embedded;
     }
 
-    public void setEmbedded(Object embedded) {
+    public void setEmbedded(Embedded embedded) {
         this.embedded = embedded;
     }
 }

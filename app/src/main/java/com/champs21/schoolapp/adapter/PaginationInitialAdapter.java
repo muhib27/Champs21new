@@ -3,6 +3,7 @@ package com.champs21.schoolapp.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.print.PrintAttributes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
@@ -26,11 +27,15 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.Resource;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.fragment.SingleNewsFragment;
 import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.model.ImageUrl;
 import com.champs21.schoolapp.model.MediaDetails;
+import com.champs21.schoolapp.model.MediaSizes;
 import com.champs21.schoolapp.model.Result;
 import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.PaginationAdapterCallback;
@@ -118,7 +123,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        CategoryModel result = movieResults.get(position); // Movie
+        final CategoryModel result = movieResults.get(position); // Movie
         final Bundle bundle = new Bundle();
         switch (getItemViewType(position)) {
 
@@ -127,7 +132,11 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 topItem.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getContent().getMainConten());
+                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
+
+//                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -136,13 +145,17 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 //heroVh.mYear.setText(formatYearLabel(result));
                 topItem.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
                 //List<ImageUrl> imageUrls =  result.getEmbedded().getFeatureMedia().get(0);
-                JsonElement jsonElement=  result.getEmbedded().getFeatureMedia().get(0).get("source_url");
-                String ht = jsonElement.toString();
+                String jsonObject=  result.getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString();
+                //jsonObject.get("sizes");
+
+//                String ht = jsonElement.toString();
 //                parseTopicList(ht);
 //                String i = jsonArray.get(12).toString();
 
 
-                loadImage(ht);
+//                loadImage(ht);
+                loadImage(result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(topItem.mPosterImg);
+
 //                loadImage(result.getEmbedded().)
 //                        .into(heroVh.mPosterImg);
                 break;
@@ -157,7 +170,10 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getContent().getMainConten());
+                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
+                        //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -199,23 +215,24 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 });
 
 //                // load movie thumbnail
-//                loadImage(result.getPosterPath())
-//                        .listener(new RequestListener<String, GlideDrawable>() {
-//                            @Override
-//                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                                // TODO: 08/11/16 handle failure
-//                                movieVH.mProgress.setVisibility(View.GONE);
-//                                return false;
-//                            }
-//
-//                            @Override
-//                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                                // image ready, hide progress now
-//                                movieVH.mProgress.setVisibility(View.GONE);
-//                                return false;   // return false if you want Glide to handle everything else.
-//                            }
-//                        })
-//                        .into(movieVH.mPosterImg);
+
+                loadImage( result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString())
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                // TODO: 08/11/16 handle failure
+                                itemHolder.mProgress.setVisibility(View.GONE);
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                // image ready, hide progress now
+                                itemHolder.mProgress.setVisibility(View.GONE);
+                                return false;   // return false if you want Glide to handle everything else.
+                            }
+                        })
+                        .into(itemHolder.mPosterImg);
                 break;
 
 //            case LOADING:
@@ -484,14 +501,13 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
         }
     }
 
-    private List<ImageUrl> parseTopicList(String object) {
+    private List<MediaSizes> parseTopicList(String object) {
 
-        List<ImageUrl> tags = new ArrayList<ImageUrl>();
-        Type listType = new TypeToken<List<ImageUrl>>() {
+        List<MediaSizes> tags = new ArrayList<MediaSizes>();
+        Type listType = new TypeToken<List<MediaSizes>>() {
         }.getType();
         tags = new Gson().fromJson(object, listType);
         return tags;
     }
-
 
 }

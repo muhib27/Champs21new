@@ -23,7 +23,12 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.NetworkConnection;
@@ -37,6 +42,9 @@ import java.net.URL;
 public class SingleNewsFragment extends Fragment {
     private WebView webView;
     private String pageUrl;
+    private TextView newsTitle;
+    private ImageView imageView;
+
 
 
     public SingleNewsFragment() {
@@ -55,14 +63,42 @@ public class SingleNewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        webView = (WebView)view.findViewById(R.id.webView);
+        imageView = (ImageView)view.findViewById(R.id.poster);
+        newsTitle = (TextView)view.findViewById(R.id.newsTitle);
+        if(getArguments().containsKey(AppConstant.SELECTED_ITEM_CONTENT))
+        {
+            pageUrl = getArguments().getString(AppConstant.SELECTED_ITEM_CONTENT);
+        }
+
+        if(getArguments().containsKey(AppConstant.SELECTED_ITEM_TITLE))
+        {
+            if(getArguments().getString(AppConstant.SELECTED_ITEM_TITLE)!= null)
+                newsTitle.setText(getArguments().getString(AppConstant.SELECTED_ITEM_TITLE));
+        }
         if(getArguments().containsKey(AppConstant.SELECTED_ITEM_LINK))
         {
-            pageUrl = getArguments().getString(AppConstant.SELECTED_ITEM_LINK);
+            try {
+                if(getArguments().getString(AppConstant.SELECTED_ITEM_LINK)!= null)
+                    loadImage(getArguments().getString(AppConstant.SELECTED_ITEM_LINK)).into(imageView);
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
-        webView = (WebView)view.findViewById(R.id.webView);
+
 
         loadWebView(pageUrl);
 
+    }
+
+    private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
+        return Glide
+                .with(getActivity())
+                .load(posterPath)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
+                .centerCrop()
+                .crossFade();
     }
 
     private void loadWebView(String pageLink) {

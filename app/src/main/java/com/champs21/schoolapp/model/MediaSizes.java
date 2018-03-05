@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class MediaSizes {
-    @SerializedName("thumbnail")
+    @SerializedName("sizes")
     @Expose
     private MediaThumbnail mediaThumbnail;
 

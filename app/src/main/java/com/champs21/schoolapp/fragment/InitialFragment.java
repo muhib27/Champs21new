@@ -68,7 +68,7 @@ public class InitialFragment extends Fragment {
     TextView txtError;
     private static int si = 0;
     private static final int PAGE_START = 5;
-    private static final int PAGE_START_OFFSET = 1;
+    private static final int PAGE_START_OFFSET = 0;
     ArrayList<CategoryModel> results = new ArrayList<>();
 
     private boolean isLoading = false;

@@ -24,6 +24,9 @@ import android.widget.TextView;
 import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.fragment.SingleNewsFragment;
 import com.champs21.schoolapp.model.CategoryModel;
@@ -167,23 +170,28 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 });
 
 //                // load movie thumbnail
-//                loadImage(result.getPosterPath())
-//                        .listener(new RequestListener<String, GlideDrawable>() {
-//                            @Override
-//                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-//                                // TODO: 08/11/16 handle failure
-//                                movieVH.mProgress.setVisibility(View.GONE);
-//                                return false;
-//                            }
-//
-//                            @Override
-//                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-//                                // image ready, hide progress now
-//                                movieVH.mProgress.setVisibility(View.GONE);
-//                                return false;   // return false if you want Glide to handle everything else.
-//                            }
-//                        })
-//                        .into(movieVH.mPosterImg);
+                try {
+                    loadImage(result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString())
+                            .listener(new RequestListener<String, GlideDrawable>() {
+                                @Override
+                                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                    // TODO: 08/11/16 handle failure
+                                    movieVH.mProgress.setVisibility(View.GONE);
+                                    return false;
+                                }
+
+                                @Override
+                                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    // image ready, hide progress now
+                                    movieVH.mProgress.setVisibility(View.GONE);
+                                    return false;   // return false if you want Glide to handle everything else.
+                                }
+                            })
+                            .into(movieVH.mPosterImg);
+                }catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
                 break;
 
             case LOADING:
@@ -264,7 +272,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
     private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
         return Glide
                 .with(context)
-                .load(BASE_URL_IMG + posterPath)
+                .load(posterPath)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
                 .centerCrop()
                 .crossFade();

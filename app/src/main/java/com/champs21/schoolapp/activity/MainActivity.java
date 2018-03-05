@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity
 
     private void callNewsApiFirst(int selected, final int callNo) {
         if (selected == -1) {
-            RetrofitApiClient.getApiInterface().getLatest(5, 1)
+            RetrofitApiClient.getApiInterface().getLatest(5, 0)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Response<List<CategoryModel>>>() {
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity
 //            });
 
 
-            RetrofitApiClient.getApiInterface().getTopics(selected, 5, 1)
+            RetrofitApiClient.getApiInterface().getTopics(selected, 5, 0)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<Response<List<CategoryModel>>>() {

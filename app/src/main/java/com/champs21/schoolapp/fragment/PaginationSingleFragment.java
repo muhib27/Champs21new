@@ -40,6 +40,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Headers;
 import okhttp3.internal.framed.Header;
 import retrofit2.Call;
@@ -65,8 +69,8 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
     Button btnRetry;
     TextView txtError;
 
-    private static final int PAGE_START = 5;
-    private static final int PAGE_START_OFFSET = 1;
+    private static final int PAGE_START = 15;
+    private static final int PAGE_START_OFFSET = 0;
 
     private boolean isLoading = false;
     private boolean isLastPage = false;
@@ -116,7 +120,7 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
             @Override
             protected void loadMoreItems() {
                 isLoading = true;
-                currentPage = 15;
+//                currentPage = 15;
                 currentOffst += 15;
 
                 //loadNextPage();
@@ -155,6 +159,47 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
 
     private void callNewsApiFirst( int selected) {
         hideErrorView();
+
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<List<CategoryModel>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<List<CategoryModel>> value) {
+                        if(value.code()==200){
+                            Headers headers = value.headers();
+                            TOTAL_ITEM = Integer.valueOf(headers.get("X-WP-Total"));
+                            List<CategoryModel> singleList = value.body();
+                            //singleList.size();
+                            progressBar.setVisibility(View.GONE);
+                            adapter.addAll(singleList);
+
+                            if (currentOffst < TOTAL_ITEM) adapter.addLoadingFooter();
+                            else isLastPage = true;
+//                            results.addAll(singleList);
+//                            results.add(singleList.get(4));
+//                            si++;
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showErrorView(e);
+                        adapter.showRetry(true, fetchErrorMessage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
 //        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst).enqueue(new Callback<JsonElement>() {
 //            @Override
@@ -242,7 +287,44 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
     }
 
     private void callNewsApiNext( int selected) {
-        hideErrorView();
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<List<CategoryModel>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<List<CategoryModel>> value) {
+                        if(value.code()==200){
+                            adapter.removeLoadingFooter();
+                            isLoading = false;
+                            List<CategoryModel> singleList = value.body();
+                            //singleList.size();
+                            adapter.addAll(singleList);
+
+                            if (currentOffst < TOTAL_ITEM) adapter.addLoadingFooter();
+                            else isLastPage = true;
+//                            results.addAll(singleList);
+//                            results.add(singleList.get(4));
+//                            si++;
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        adapter.showRetry(true, fetchErrorMessage(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
 //        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst).enqueue(new Callback<JsonElement>() {
 //            @Override
@@ -275,79 +357,6 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
 //        });
 
     }
-
-//    private void loadNextPage() {
-//        MovieApi.getApiInterface().getTopRatedMovies(getString(R.string.my_api_key), "en_US", currentPage).enqueue(new Callback<TopRatedMovies>() {
-//            @Override
-//            public void onResponse(Call<TopRatedMovies> call, Response<TopRatedMovies> response) {
-//                if (response.code() == 200) {
-//                    //Log.d(Constant.tag, "Submit ok");
-//                    //hideProgress();
-//                    adapter.removeLoadingFooter();
-//                    isLoading = false;
-//
-//                    List<Result> results = fetchResults(response);
-////                    int total = results.size();
-////                    if (results.size() >= 5) {
-////                        for (int i = 5; i < total; i = i + 5) {
-////                            results.add(i, results.get(i));
-////                        }
-////
-////                    }
-//                    adapter.addAll(results);
-//
-//                    if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-//                    else isLastPage = true;
-//
-//
-//                } else {
-//
-//                    // Log.d(Constant.tag, "Submit response code " + response.code());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<TopRatedMovies> call, Throwable t) {
-//                //hideProgress();
-//                // Log.d(Constant.tag, "Error submit task:", error);
-//                adapter.showRetry(true, fetchErrorMessage(t));
-//            }
-//        });
-
-//        MovieApi.getApiInterface().getTopRatedMovies( getString(R.string.my_api_key), "en_US", currentPage)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(response -> {
-//                            if (response.code() == 200) {
-//                                //Log.d(Constant.tag, "Submit ok");
-//                                //hideProgress();
-//                                adapter.removeLoadingFooter();
-//                                isLoading = false;
-//
-//                                List<Result> results = fetchResults(response);
-//                                adapter.addAll(results);
-//
-//                                if (currentPage != TOTAL_PAGES) adapter.addLoadingFooter();
-//                                else isLastPage = true;
-//
-//
-//                            } else {
-//
-//                                // Log.d(Constant.tag, "Submit response code " + response.code());
-//                            }
-//                        },
-//                        error -> {
-//                            //hideProgress();
-//                            // Log.d(Constant.tag, "Error submit task:", error);
-//                            adapter.showRetry(true, fetchErrorMessage(error));
-//                        },
-//                        () -> {
-//                            //hideProgress();
-//
-//                        }
-//                );
-//    }
-
     private ArrayList<Result> fetchResults(Response<TopRatedMovies> response) {
         TopRatedMovies topRatedMovies = response.body();
 //        ArrayList<Result> list = new ArrayList<>();
