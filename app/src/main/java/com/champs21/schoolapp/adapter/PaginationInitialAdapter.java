@@ -34,14 +34,18 @@ import com.champs21.schoolapp.model.MediaDetails;
 import com.champs21.schoolapp.model.Result;
 import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.PaginationAdapterCallback;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -132,11 +136,13 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 //heroVh.mYear.setText(formatYearLabel(result));
                 topItem.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
                 //List<ImageUrl> imageUrls =  result.getEmbedded().getFeatureMedia().get(0);
-                JsonObject object =  result.getEmbedded().getFeatureMedia().get(0);
+                JsonElement jsonElement=  result.getEmbedded().getFeatureMedia().get(0).get("source_url");
+                String ht = jsonElement.toString();
+//                parseTopicList(ht);
 //                String i = jsonArray.get(12).toString();
 
 
-                loadImage(result.getEmbedded().toString());
+                loadImage(ht);
 //                loadImage(result.getEmbedded().)
 //                        .into(heroVh.mPosterImg);
                 break;
@@ -297,7 +303,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
     private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
         return Glide
                 .with(context)
-                .load(BASE_URL_IMG + posterPath)
+                .load(posterPath)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
                 .centerCrop()
                 .crossFade();
@@ -476,6 +482,15 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 //                    break;
             }
         }
+    }
+
+    private List<ImageUrl> parseTopicList(String object) {
+
+        List<ImageUrl> tags = new ArrayList<ImageUrl>();
+        Type listType = new TypeToken<List<ImageUrl>>() {
+        }.getType();
+        tags = new Gson().fromJson(object, listType);
+        return tags;
     }
 
 
