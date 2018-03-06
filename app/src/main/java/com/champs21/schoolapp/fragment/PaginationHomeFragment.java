@@ -44,7 +44,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PaginationTestFragment extends Fragment implements PaginationAdapterCallback {
+public class PaginationHomeFragment extends Fragment implements PaginationAdapterCallback {
 
     PaginationAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -64,7 +64,7 @@ public class PaginationTestFragment extends Fragment implements PaginationAdapte
     private int currentPage = PAGE_START;
 
 
-    public PaginationTestFragment() {
+    public PaginationHomeFragment() {
         // Required empty public constructor
     }
 

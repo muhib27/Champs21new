@@ -1,23 +1,12 @@
 package com.champs21.schoolapp.activity;
 
-import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.internal.NavigationMenuView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.SearchView;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -26,34 +15,26 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.champs21.schoolapp.R;
-import com.champs21.schoolapp.fragment.InitialFragment;
+import com.champs21.schoolapp.fragment.HomeFragment;
 import com.champs21.schoolapp.fragment.MainFragment;
 import com.champs21.schoolapp.fragment.NewsFragment;
 import com.champs21.schoolapp.fragment.PaginationSingleFragment;
-import com.champs21.schoolapp.fragment.PaginationTestFragment;
+import com.champs21.schoolapp.fragment.PaginationHomeFragment;
 import com.champs21.schoolapp.model.CategoryModel;
 
-import com.champs21.schoolapp.model.CategoryModelExtended;
-import com.champs21.schoolapp.model.CategoryModelTest;
 import com.champs21.schoolapp.model.Result;
 import com.champs21.schoolapp.model.TopRatedMovies;
 
 import com.champs21.schoolapp.retrofit.RetrofitApiClient;
 import com.champs21.schoolapp.utils.AppConstant;
 
+import com.champs21.schoolapp.utils.DrawerLocker;
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -67,16 +48,10 @@ import io.reactivex.disposables.Disposable;
 //import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Headers;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.champs21.schoolapp.R.id.webView;
-
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, DrawerLocker {
     public static DrawerLayout drawer;
     public static ActionBarDrawerToggle toggle;
     Toolbar toolbar;
@@ -94,10 +69,12 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        showToolbar();
+        showProgressDialog();
         si = 0;
         listTopic = new ArrayList<>();
         results.clear();
-        showToolbar();
+
         for (int i = 0; i < menuArray.length; i++)
             callNewsApiFirst(menuArray[i], i);
         Fabric.with(this, new Crashlytics());
@@ -128,6 +105,20 @@ public class MainActivity extends AppCompatActivity
 
         NavigationMenuView navMenuView = (NavigationMenuView) navigationView.getChildAt(0);
         navMenuView.addItemDecoration(new DividerItemDecoration(MainActivity.this, DividerItemDecoration.VERTICAL));
+    }
+
+    ProgressDialog progressLoder;
+
+    public void showProgressDialog() {
+        progressLoder = new ProgressDialog(this);
+        progressLoder.setMessage("Pleast wait....");
+        progressLoder.setCancelable(false);
+        progressLoder.show();
+
+    }
+
+    public void hideProgressDialog() {
+        progressLoder.dismiss();
     }
 
 
@@ -270,7 +261,7 @@ public class MainActivity extends AppCompatActivity
                                 results.addAll(singleList);
                                 results.add(singleList.get(4));
                                 si++;
-                                gotoInitialFragment();
+                                gotoHomeFragment();
 
                             }
                         }
@@ -484,7 +475,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void gotoPaginationTestFragment() {
-        PaginationTestFragment paginationTestFragment = new PaginationTestFragment();
+        PaginationHomeFragment paginationTestFragment = new PaginationHomeFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_acitivity_container, paginationTestFragment, "paginationTestFragment");
@@ -496,6 +487,7 @@ public class MainActivity extends AppCompatActivity
         //mActionBar = getSupportActionBar();
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -523,7 +515,7 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                     toggle.setDrawerIndicatorEnabled(true);
-                    toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+//                    toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
                     toggle.setToolbarNavigationClickListener(originalToolbarListener);
 //                    toggle.syncState();
                 }
@@ -667,7 +659,7 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -690,13 +682,27 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    private void gotoInitialFragment() {
-        InitialFragment initialFragment = new InitialFragment();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
+    private void gotoHomeFragment() {
+        try {
+            hideProgressDialog();
+            HomeFragment homeFragment = new HomeFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
 //        paginationSingleFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, initialFragment, "initialFragment");
-        transaction.commit();
+            transaction.replace(R.id.main_acitivity_container, homeFragment, "homeFragment");
+            transaction.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+            finish();
+        }
+    }
+
+    @Override
+    public void setDrawerEnabled(boolean enabled) {
+        int lockMode = enabled ? DrawerLayout.LOCK_MODE_UNLOCKED :
+                DrawerLayout.LOCK_MODE_LOCKED_CLOSED;
+        drawer.setDrawerLockMode(lockMode);
+        toggle.setDrawerIndicatorEnabled(enabled);
     }
 
 

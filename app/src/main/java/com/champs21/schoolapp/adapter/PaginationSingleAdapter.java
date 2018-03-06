@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -126,17 +127,27 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
 //                break;
 
             case ITEM:
-                final MovieVH movieVH = (MovieVH) holder;
+                final MovieVH itemHolder = (MovieVH) holder;
 
-                movieVH.mMovieTitle.setText(result.getTitle().getRendered());
+                itemHolder.mMovieTitle.setText(result.getTitle().getRendered());
 //                movieVH.mYear.setText(formatYearLabel(result));
-                movieVH.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
-                movieVH.mPosterImg.setImageResource(R.drawable.sample);
-                movieVH.menuOption.setOnClickListener(new View.OnClickListener() {
+                itemHolder.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
+                itemHolder.mPosterImg.setImageResource(R.drawable.sample);
+                itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
+                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+                        gotoSingleNewsFragment(bundle);
+                    }
+                });
+                itemHolder.menuOption.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //creating a popup menu
-                        PopupMenu popup = new PopupMenu(context,  movieVH.menuOption);
+                        PopupMenu popup = new PopupMenu(context,  itemHolder.menuOption);
                         //inflating menu from xml resource
                         popup.inflate(R.menu.option_menu);
                         //adding click listener
@@ -176,18 +187,18 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 @Override
                                 public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                                     // TODO: 08/11/16 handle failure
-                                    movieVH.mProgress.setVisibility(View.GONE);
+                                    itemHolder.mProgress.setVisibility(View.GONE);
                                     return false;
                                 }
 
                                 @Override
                                 public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                     // image ready, hide progress now
-                                    movieVH.mProgress.setVisibility(View.GONE);
+                                    itemHolder.mProgress.setVisibility(View.GONE);
                                     return false;   // return false if you want Glide to handle everything else.
                                 }
                             })
-                            .into(movieVH.mPosterImg);
+                            .into(itemHolder.mPosterImg);
                 }catch (Exception e)
                 {
                     e.printStackTrace();
@@ -223,7 +234,8 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
         FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         singleNewsFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, singleNewsFragment, "singleNewsFragment").addToBackStack(null);
+//        transaction.replace(R.id.main_acitivity_container, singleNewsFragment, "singleNewsFragment").addToBackStack(null);
+        transaction.add(R.id.main_acitivity_container, singleNewsFragment, "singleNewsFragment").addToBackStack(null);
         transaction.commit();
     }
 
@@ -387,6 +399,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
         private ImageView mPosterImg;
         private ProgressBar mProgress;
         private TextView menuOption;
+        private FrameLayout itemLayout;
 
         public MovieVH(View itemView) {
             super(itemView);
@@ -397,6 +410,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
             mPosterImg = (ImageView) itemView.findViewById(R.id.movie_poster);
             mProgress = (ProgressBar) itemView.findViewById(R.id.movie_progress);
             menuOption = (TextView) itemView.findViewById(R.id.menuOptions);
+            itemLayout = (FrameLayout)itemView.findViewById(R.id.itemLayout);
         }
     }
 

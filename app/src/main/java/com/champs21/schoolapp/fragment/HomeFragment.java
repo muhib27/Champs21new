@@ -8,6 +8,7 @@ import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ import com.champs21.schoolapp.model.TopRatedMovies;
 import com.champs21.schoolapp.retrofit.MovieApi;
 import com.champs21.schoolapp.retrofit.RetrofitApiClient;
 import com.champs21.schoolapp.utils.AppConstant;
+import com.champs21.schoolapp.utils.DrawerLocker;
 import com.champs21.schoolapp.utils.PaginationAdapterCallback;
 import com.champs21.schoolapp.utils.PaginationScrollListener;
 import com.google.gson.Gson;
@@ -56,7 +58,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InitialFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
     PaginationInitialAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -81,7 +83,7 @@ public class InitialFragment extends Fragment {
     private int[] menuArray = {AppConstant.NEWS, AppConstant.SCITECH, AppConstant.APPS_GAMES, AppConstant.CHAMPION, AppConstant.LIFE_STYLE, AppConstant.RESOURCE_CENTER, AppConstant.SPORTS, AppConstant.ENTERTAINMENT, AppConstant.VIDEO};
 
 
-    public InitialFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -96,6 +98,7 @@ public class InitialFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((DrawerLocker) getActivity()).setDrawerEnabled(true);
         si = 0;
 
 //        if(getArguments().containsKey(AppConstant.SELECTED_ITEM))

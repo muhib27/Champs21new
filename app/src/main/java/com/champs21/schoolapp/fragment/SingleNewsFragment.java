@@ -12,7 +12,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +32,9 @@ import com.bumptech.glide.DrawableRequestBuilder;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.champs21.schoolapp.R;
+import com.champs21.schoolapp.activity.MainActivity;
 import com.champs21.schoolapp.utils.AppConstant;
+import com.champs21.schoolapp.utils.DrawerLocker;
 import com.champs21.schoolapp.utils.NetworkConnection;
 
 import java.net.MalformedURLException;
@@ -63,6 +67,13 @@ public class SingleNewsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            MainActivity.toggle.setDrawerIndicatorEnabled(false);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+//        MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        ((DrawerLocker) getActivity()).setDrawerEnabled(false);
+
         webView = (WebView)view.findViewById(R.id.webView);
         imageView = (ImageView)view.findViewById(R.id.poster);
         newsTitle = (TextView)view.findViewById(R.id.newsTitle);
@@ -97,7 +108,6 @@ public class SingleNewsFragment extends Fragment {
                 .with(getActivity())
                 .load(posterPath)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
-                .centerCrop()
                 .crossFade();
     }
 
@@ -217,7 +227,8 @@ public class SingleNewsFragment extends Fragment {
 //        });
 //        webView.loadUrl(pageLink);
        // webView.loadData(pageLink, "text/html", "UTF-8");
-        webView.loadDataWithBaseURL(null, pageLink, "text/html", "UTF-8", null);
+        //webView.loadDataWithBaseURL(null, changedHeaderHtml(pageLink), "text/html", "UTF-8", null);
+        webView.loadDataWithBaseURL(null, "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + pageLink, "text/html", "UTF-8", null);
 
     }
 
@@ -262,5 +273,14 @@ public class SingleNewsFragment extends Fragment {
         dialog = builder.create();
         dialog.show();
 
+    }
+
+    public String changedHeaderHtml(String htmlText) {
+
+        String head = "<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" /></head>";
+
+        String closedTag = "</body></html>";
+        String changeFontHtml = head + htmlText + closedTag;
+        return changeFontHtml;
     }
 }

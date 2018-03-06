@@ -8,6 +8,8 @@ import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,6 +22,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.champs21.schoolapp.R;
+import com.champs21.schoolapp.activity.MainActivity;
 import com.champs21.schoolapp.adapter.PaginationSingleAdapter;
 import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.model.Result;
@@ -27,6 +30,7 @@ import com.champs21.schoolapp.model.TopRatedMovies;
 import com.champs21.schoolapp.retrofit.MovieApi;
 import com.champs21.schoolapp.retrofit.RetrofitApiClient;
 import com.champs21.schoolapp.utils.AppConstant;
+import com.champs21.schoolapp.utils.DrawerLocker;
 import com.champs21.schoolapp.utils.PaginationAdapterCallback;
 import com.champs21.schoolapp.utils.PaginationScrollListener;
 import com.google.gson.Gson;
@@ -96,6 +100,11 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+            MainActivity.toggle.setDrawerIndicatorEnabled(false);
+            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        ((DrawerLocker) getActivity()).setDrawerEnabled(false);
 
         if(getArguments().containsKey(AppConstant.SELECTED_ITEM))
         {
@@ -307,9 +316,6 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
 
                             if (currentOffst < TOTAL_ITEM) adapter.addLoadingFooter();
                             else isLastPage = true;
-//                            results.addAll(singleList);
-//                            results.add(singleList.get(4));
-//                            si++;
 
                         }
 

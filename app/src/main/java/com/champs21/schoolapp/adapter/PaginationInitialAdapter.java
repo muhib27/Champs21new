@@ -132,9 +132,9 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 topItem.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
+                        //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
 
-//                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
                         bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
                         bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
                         gotoSingleNewsFragment(bundle);
@@ -170,8 +170,8 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
-                        //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+                        //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
+                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
                         bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
                         bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
                         gotoSingleNewsFragment(bundle);
@@ -199,7 +199,9 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 //                                        context.startActivity(sendIntent);
                                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                         shareIntent.setType("text/plain");
-                                        shareIntent.putExtra(Intent.EXTRA_TEXT, "http://codepath.com");
+                                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, movieResults.get(position).getTitle().getRendered());
+                                        shareIntent.putExtra(Intent.EXTRA_TITLE, movieResults.get(position).getTitle().getRendered());
+                                        shareIntent.putExtra(Intent.EXTRA_TEXT, movieResults.get(position).getLink());
                                         context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
                                         break;
                                     case R.id.save:
