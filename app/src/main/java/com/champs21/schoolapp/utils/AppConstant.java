@@ -9,6 +9,7 @@ public class AppConstant {
     public static final String SELECTED_ITEM_LINK = "link";
     public static final String SELECTED_ITEM_TITLE = "title";
     public static final String SELECTED_ITEM_CONTENT = "content";
+    public static final String SELECTED_ITEM_AUTHOR = "author";
 
 
 //    public static final String NEWS = "news";

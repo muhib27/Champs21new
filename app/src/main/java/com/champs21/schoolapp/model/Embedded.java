@@ -14,16 +14,11 @@ import java.util.List;
 public class Embedded {
     @SerializedName("wp:featuredmedia")
     @Expose
-//    private MediaDetails mediaDetails;
-//
-//    public MediaDetails getMediaDetails() {
-//        return mediaDetails;
-//    }
-//
-//    public void setMediaDetails(MediaDetails mediaDetails) {
-//        this.mediaDetails = mediaDetails;
-//    }
-      private ArrayList<JsonObject> featureMedia;
+    private ArrayList<JsonObject> featureMedia;
+
+    @SerializedName("author")
+    @Expose
+    private ArrayList<JsonObject> author;
 
     public ArrayList<JsonObject> getFeatureMedia() {
         return featureMedia;
@@ -32,6 +27,15 @@ public class Embedded {
     public void setFeatureMedia(ArrayList<JsonObject> featureMedia) {
         this.featureMedia = featureMedia;
     }
+
+    public ArrayList<JsonObject> getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(ArrayList<JsonObject> author) {
+        this.author = author;
+    }
+
     //    private List<MediaDetails> mediaDetails;
 //
 //    public List<MediaDetails> getMediaDetails() {

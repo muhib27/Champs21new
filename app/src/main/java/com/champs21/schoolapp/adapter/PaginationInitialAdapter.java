@@ -137,6 +137,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                         bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
                         bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
                         bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -174,6 +175,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                         bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
                         bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
                         bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -284,7 +286,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
+        if (position%6 == 0 ) {
             return HERO;
         }
         else if((position%6) == 5)

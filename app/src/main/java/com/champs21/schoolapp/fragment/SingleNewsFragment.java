@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,7 +49,7 @@ public class SingleNewsFragment extends Fragment {
     private String pageUrl;
     private TextView newsTitle;
     private ImageView imageView;
-
+    private TextView writerText;
 
 
     public SingleNewsFragment() {
@@ -71,31 +72,35 @@ public class SingleNewsFragment extends Fragment {
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        String customFont = "solaiman_lipi.ttf";
+        Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), customFont);
 //        MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         ((DrawerLocker) getActivity()).setDrawerEnabled(false);
 
-        webView = (WebView)view.findViewById(R.id.webView);
-        imageView = (ImageView)view.findViewById(R.id.poster);
-        newsTitle = (TextView)view.findViewById(R.id.newsTitle);
-        if(getArguments().containsKey(AppConstant.SELECTED_ITEM_CONTENT))
-        {
+        webView = (WebView) view.findViewById(R.id.webView);
+
+        imageView = (ImageView) view.findViewById(R.id.poster);
+        newsTitle = (TextView) view.findViewById(R.id.newsTitle);
+        writerText = (TextView) view.findViewById(R.id.writerText);
+        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_CONTENT)) {
             pageUrl = getArguments().getString(AppConstant.SELECTED_ITEM_CONTENT);
         }
 
-        if(getArguments().containsKey(AppConstant.SELECTED_ITEM_TITLE))
-        {
-            if(getArguments().getString(AppConstant.SELECTED_ITEM_TITLE)!= null)
+        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_TITLE)) {
+            if (getArguments().getString(AppConstant.SELECTED_ITEM_TITLE) != null)
                 newsTitle.setText(getArguments().getString(AppConstant.SELECTED_ITEM_TITLE));
         }
-        if(getArguments().containsKey(AppConstant.SELECTED_ITEM_LINK))
-        {
+        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_LINK)) {
             try {
-                if(getArguments().getString(AppConstant.SELECTED_ITEM_LINK)!= null)
+                if (getArguments().getString(AppConstant.SELECTED_ITEM_LINK) != null)
                     loadImage(getArguments().getString(AppConstant.SELECTED_ITEM_LINK)).into(imageView);
-            }catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_AUTHOR)) {
+            if (getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR) != null)
+                writerText.setText(getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR));
         }
 
 
@@ -150,7 +155,7 @@ public class SingleNewsFragment extends Fragment {
 //
 //        webView .getSettings().setUseWideViewPort(true);
 //        webView .getSettings().setLoadWithOverviewMode(true);
-        webView .getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setJavaScriptEnabled(true);
 //        webView .getSettings().setDomStorageEnabled(true);
 //        webView .getSettings().setBuiltInZoomControls(true);
 //        webView .getSettings().setDisplayZoomControls(false);
@@ -226,10 +231,13 @@ public class SingleNewsFragment extends Fragment {
 //            }
 //        });
 //        webView.loadUrl(pageLink);
-       // webView.loadData(pageLink, "text/html", "UTF-8");
+        // webView.loadData(pageLink, "text/html", "UTF-8");
         //webView.loadDataWithBaseURL(null, changedHeaderHtml(pageLink), "text/html", "UTF-8", null);
-        webView.loadDataWithBaseURL(null, "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + pageLink, "text/html", "UTF-8", null);
-
+        try {
+            webView.loadDataWithBaseURL("file:///android_asset/my_page.html", "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + pageLink, "text/html", "UTF-8", null);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 
@@ -248,8 +256,9 @@ public class SingleNewsFragment extends Fragment {
     }
 
     AlertDialog dialog;
+
     private void showAlert() {
-        if( dialog != null && dialog.isShowing() )
+        if (dialog != null && dialog.isShowing())
             return;
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

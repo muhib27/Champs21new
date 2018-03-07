@@ -3,9 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
+    android:background="@color/white"
     android:orientation="vertical"
     android:padding="@dimen/size_5dp"
-    android:background="@color/white"
     tools:context="com.champs21.schoolapp.fragment.SingleNewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -14,21 +14,37 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/newsTitle"
-            style="@style/TextAppearance.AppCompat.Subhead"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            android:textSize="@dimen/text_size_18sp"
-            android:text="Head Line" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/newsTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Head Line"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/writerText"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Head Line"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="normal" />
+        </LinearLayout>
 
         <ImageView
-            android:layout_marginTop="@dimen/activity_margin"
             android:id="@+id/poster"
             android:layout_width="match_parent"
             android:layout_height="@dimen/poster_hero_height"
+            android:layout_marginTop="@dimen/activity_margin"
             android:src="@drawable/sample"
             tools:background="@color/colorAccent" />
 

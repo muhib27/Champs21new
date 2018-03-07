@@ -90,10 +90,10 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
                 viewHolder = new LoadingVH(viewLoading);
                 break;
-//            case HERO:
-//                View viewHero = inflater.inflate(R.layout.item_hero, parent, false);
-//                viewHolder = new HeroVH(viewHero);
-//                break;
+            case HERO:
+                View viewHero = inflater.inflate(R.layout.item_hero, parent, false);
+                viewHolder = new HeroVH(viewHero);
+                break;
             case ADD:
                 View viewAdd = inflater.inflate(R.layout.layout, parent, false);
                 viewHolder = new HeroAdd(viewAdd);
@@ -107,25 +107,25 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
         CategoryModel result = movieResults.get(position); // Movie
         final Bundle bundle = new Bundle();
         switch (getItemViewType(position)) {
+            case HERO:
+            final HeroVH topItem = (HeroVH) holder;
+            topItem.cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
 
-//            case HERO:
-//                final HeroVH heroVh = (HeroVH) holder;
-//                heroVh.cardView.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getLink());
-//                        gotoSingleNewsFragment(bundle);
-//                    }
-//                });
-//
-//                heroVh.mMovieTitle.setText(result.getTitle().getRendered());
-//                //heroVh.mYear.setText(formatYearLabel(result));
-//                heroVh.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
-//
-////                loadImage(result.getBackdropPath())
-////                        .into(heroVh.mPosterImg);
-//                break;
+                    bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+                    bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+                    bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+                    bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
+                    gotoSingleNewsFragment(bundle);
+                }
+            });
 
+            topItem.mMovieTitle.setText(result.getTitle().getRendered());
+            topItem.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
+            loadImage(result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(topItem.mPosterImg);
+            break;
             case ITEM:
                 final MovieVH itemHolder = (MovieVH) holder;
 
@@ -140,6 +140,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                         bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
                         bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
                         bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -246,16 +247,16 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-//        if (position == 0) {
-//            return HERO;
-//        }
+        if (position == 0) {
+            return HERO;
+        }
 //        else if((position)%5 ==0)
 //        {
 //            return 5;
 //        }
-//        else {
+        else {
             return (position == movieResults.size() - 1 && isLoadingAdded) ? LOADING : ITEM;
-//        }
+        }
     }
 
     /*

@@ -21,6 +21,11 @@ public class CategoryModel {
     @Expose
     private String id;
 
+    @SerializedName("date")
+    @Expose
+    private String newsDate;
+
+
     @SerializedName("link")
     @Expose
     private String link;
@@ -90,7 +95,14 @@ public class CategoryModel {
         this.content = content;
     }
 
-//    public Object getEmbedded() {
+    public String getNewsDate() {
+        return newsDate;
+    }
+
+    public void setNewsDate(String newsDate) {
+        this.newsDate = newsDate;
+    }
+    //    public Object getEmbedded() {
 //        return embedded;
 //    }
 //

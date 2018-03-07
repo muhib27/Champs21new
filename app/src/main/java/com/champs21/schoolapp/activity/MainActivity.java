@@ -42,11 +42,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.fabric.sdk.android.Fabric;
+import io.reactivex.ObservableSource;
 import io.reactivex.Observer;
 //import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 //import io.reactivex.schedulers.Schedulers;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
@@ -74,9 +76,10 @@ public class MainActivity extends AppCompatActivity
         si = 0;
         listTopic = new ArrayList<>();
         results.clear();
+        callChainApi();
 
-        for (int i = 0; i < menuArray.length; i++)
-            callNewsApiFirst(menuArray[i], i);
+//        for (int i = 0; i < menuArray.length; i++)
+//            callNewsApiFirst(menuArray[i], i);
         Fabric.with(this, new Crashlytics());
         //mainFragment = new MainFragment();
         //gotoPaginationTestFragment();
@@ -121,6 +124,178 @@ public class MainActivity extends AppCompatActivity
         progressLoder.dismiss();
     }
 
+    private void callChainApi() {
+        RetrofitApiClient.getApiInterface().getLatest(5,0)
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            si++;
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.NEWS, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getLatest(5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SCITECH, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.NEWS,5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.APPS_GAMES, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SCITECH,5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.CHAMPION, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.APPS_GAMES,5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.LIFE_STYLE, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.CHAMPION,5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.RESOURCE_CENTER, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.LIFE_STYLE,5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SPORTS, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.RESOURCE_CENTER,5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.VIDEO, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SPORTS,5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if(listResponse.code()==200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            results.addAll(singleList);
+                            results.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.VIDEO, 5, 0);
+                        }
+                        else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.ENTERTAINMENT,5, 0);
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<List<CategoryModel>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<List<CategoryModel>> value) {
+                        List<CategoryModel> singleList = value.body();
+                        singleList.size();
+                        results.addAll(singleList);
+                        results.add(singleList.get(4));
+                        gotoHomeFragment();
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+
+    }
+
 
     private void callNewsApiFirst(int selected, final int callNo) {
         if (selected == -1) {
@@ -135,7 +310,7 @@ public class MainActivity extends AppCompatActivity
 
                         @Override
                         public void onNext(Response<List<CategoryModel>> value) {
-                            if(value.code()==200){
+                            if (value.code() == 200) {
                                 List<CategoryModel> singleList = value.body();
                                 singleList.size();
                                 results.addAll(singleList);
@@ -255,7 +430,7 @@ public class MainActivity extends AppCompatActivity
                         @Override
                         public void onNext(Response<List<CategoryModel>> value) {
 
-                            if(value.code()==200){
+                            if (value.code() == 200) {
                                 List<CategoryModel> singleList = value.body();
                                 singleList.size();
                                 results.addAll(singleList);
@@ -268,6 +443,7 @@ public class MainActivity extends AppCompatActivity
 
                         @Override
                         public void onError(Throwable e) {
+                            progressLoder.dismiss();
 
                         }
 
@@ -369,8 +545,8 @@ public class MainActivity extends AppCompatActivity
 //                    {
 //                        CategoryModel categoryModel =GsonParser.getInstance().parseServerResponseP(jsonArray);
 //                    }
-                    // CategoryModel categoryModel = new CategoryModel(response)
-                    //ArrayList<CategoryModel> list = response.body();
+        // CategoryModel categoryModel = new CategoryModel(response)
+        //ArrayList<CategoryModel> list = response.body();
 //                    Wrapper modelContainer = GsonParser.getInstance()
 //                            .parseServerResponse2(response.body());
 //                    if(modelContainer.getStatus().getCode()==200) {
@@ -517,7 +693,7 @@ public class MainActivity extends AppCompatActivity
                     toggle.setDrawerIndicatorEnabled(true);
 //                    toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
                     toggle.setToolbarNavigationClickListener(originalToolbarListener);
-//                    toggle.syncState();
+                    toggle.syncState();
                 }
             }
         });
@@ -544,10 +720,27 @@ public class MainActivity extends AppCompatActivity
 //            return;
 //
 //        } else {
-            // The back key event only counts if we execute super.onBackPressed();
-            super.onBackPressed();
+        // The back key event only counts if we execute super.onBackPressed();
+        super.onBackPressed();
 //        }
     }
+//
+//    @Override
+//    public void onBackPressed() {
+//        //drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+//            getSupportFragmentManager().popBackStack();
+//            if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
+//                //navigationView.setCheckedItem(R.id.homepage);
+//                toggle.setDrawerIndicatorEnabled(true);
+//            }
+//        } else {
+//            this.finish();
+//        }
+//    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -691,7 +884,7 @@ public class MainActivity extends AppCompatActivity
 //        paginationSingleFragment.setArguments(bundle);
             transaction.replace(R.id.main_acitivity_container, homeFragment, "homeFragment");
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             finish();
         }
