@@ -5,20 +5,26 @@
     tools:context="com.champs21.schoolapp.fragment.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/main_recycler"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/activity_margin_half"
-        android:paddingTop="@dimen/activity_margin_half"/>
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="@dimen/activity_margin_half"
+            android:paddingTop="@dimen/activity_margin_half" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <!--<ProgressBar-->
-        <!--android:id="@+id/main_progress"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"/>-->
+    <!--android:id="@+id/main_progress"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"/>-->
 
-    <!--<include layout="@layout/error_layout"/>-->
+    <include layout="@layout/error_layout"/>
 
 </FrameLayout>

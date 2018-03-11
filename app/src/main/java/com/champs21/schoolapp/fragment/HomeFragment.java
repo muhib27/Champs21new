@@ -1,6 +1,7 @@
 package com.champs21.schoolapp.fragment;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.preference.PreferenceActivity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -44,6 +46,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
+import io.reactivex.ObservableSource;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Headers;
 import okhttp3.internal.framed.Header;
 import retrofit2.Call;
@@ -58,7 +66,8 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     PaginationInitialAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -108,18 +117,58 @@ public class HomeFragment extends Fragment {
 //        listTopic = new ArrayList<>();
         //MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
+        // SwipeRefreshLayout
+        mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+
+        mSwipeRefreshLayout.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                mSwipeRefreshLayout.setRefreshing(false);
+
+                // Fetching data from server
+                //loadRecyclerViewData();
+            }
+        });
+
+
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
         progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
         errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
-        btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
+
         txtError = (TextView) view.findViewById(R.id.error_txt_cause);
 
         try {
+            //MainActivity.results.clear();
             adapter = new PaginationInitialAdapter(getContext(), MainActivity.results);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             getActivity().finish();
         }
+
+        btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
+        if (MainActivity.results.size() <= 0)
+            errorLayout.setVisibility(View.VISIBLE);
+        else
+            errorLayout.setVisibility(View.GONE);
+        btnRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showProgress();
+                callChainApi();
+            }
+        });
 
 //        if(MainActivity.results.size()>0) {
 //            adapter.addAllData(MainActivity.results);
@@ -172,7 +221,6 @@ public class HomeFragment extends Fragment {
 //        });
 
     }
-
 
 
 //    private void callNewsApiFirst(int selected, final int callNo) {
@@ -428,4 +476,191 @@ public class HomeFragment extends Fragment {
     }
 
 
+    @Override
+    public void onRefresh() {
+        callChainApi();
+    }
+
+
+    public void callChainApi() {
+        final ArrayList<CategoryModel> newresults = new ArrayList<>();
+        RetrofitApiClient.getApiInterface().getLatest(5, 0)
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            si++;
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.NEWS, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getLatest(5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SCITECH, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.NEWS, 5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.APPS_GAMES, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SCITECH, 5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.CHAMPION, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.APPS_GAMES, 5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.LIFE_STYLE, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.CHAMPION, 5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.RESOURCE_CENTER, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.LIFE_STYLE, 5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SPORTS, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.RESOURCE_CENTER, 5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.VIDEO, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SPORTS, 5, 0);
+                        }
+                    }
+                })
+                .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
+                    @Override
+                    public ObservableSource<Response<List<CategoryModel>>> apply(Response<List<CategoryModel>> listResponse) throws Exception {
+                        if (listResponse.code() == 200) {
+                            List<CategoryModel> singleList = listResponse.body();
+                            singleList.size();
+                            newresults.addAll(singleList);
+                            newresults.add(singleList.get(4));
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.VIDEO, 5, 0);
+                        } else {
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.ENTERTAINMENT, 5, 0);
+                        }
+                    }
+                })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Response<List<CategoryModel>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Response<List<CategoryModel>> value) {
+                        List<CategoryModel> singleList = value.body();
+                        singleList.size();
+                        newresults.addAll(singleList);
+                        newresults.add(singleList.get(4));
+                        results.clear();
+                        results.addAll(newresults);
+                        if (progressDialog!= null && progressDialog.isShowing())
+                            hideProgress();
+                        if (errorLayout.getVisibility() == View.VISIBLE)
+                            errorLayout.setVisibility(View.GONE);
+                        adapter.addAllData(results);
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+
+    }
+
+    private ProgressDialog progressDialog;
+
+    public void showProgress() {
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Please wait ...");
+        progressDialog.show();
+    }
+
+    public void hideProgress() {
+        if (progressDialog.isShowing())
+            progressDialog.dismiss();
+    }
 }

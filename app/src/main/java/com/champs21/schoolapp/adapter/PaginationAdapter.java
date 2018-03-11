@@ -106,7 +106,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 final HeroVH heroVh = (HeroVH) holder;
 
                 heroVh.mMovieTitle.setText(result.getTitle());
-                heroVh.mYear.setText(formatYearLabel(result));
+//                heroVh.mYear.setText(formatYearLabel(result));
                 heroVh.mMovieDesc.setText(result.getOverview());
 
                 loadImage(result.getBackdropPath())
@@ -344,7 +344,7 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
             mMovieTitle = (TextView) itemView.findViewById(R.id.movie_title);
             mMovieDesc = (TextView) itemView.findViewById(R.id.movie_desc);
-            mYear = (TextView) itemView.findViewById(R.id.movie_year);
+//            mYear = (TextView) itemView.findViewById(R.id.movie_year);
             mPosterImg = (ImageView) itemView.findViewById(R.id.movie_poster);
         }
     }

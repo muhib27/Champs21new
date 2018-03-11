@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         progressLoder.dismiss();
     }
 
-    private void callChainApi() {
+    public void callChainApi() {
         RetrofitApiClient.getApiInterface().getLatest(5,0)
                 .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
                     @Override
@@ -283,6 +283,8 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        hideProgressDialog();
+                        gotoHomeFragment();
 
                     }
 

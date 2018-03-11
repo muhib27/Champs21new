@@ -26,6 +26,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,22 +35,31 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.activity.MainActivity;
+import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.DrawerLocker;
 import com.champs21.schoolapp.utils.NetworkConnection;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SingleNewsFragment extends Fragment {
+public class SingleNewsFragment extends Fragment{
     private WebView webView;
-    private String pageUrl;
-    private TextView newsTitle;
-    private ImageView imageView;
+    private String pageContent = "";
+    private TextView newsTitle, nextTitle;
+    private ImageView imageView, nextImage;
     private TextView writerText;
+    private List<CategoryModel> childList;
+    private FrameLayout frameLayout;
+    private static int currentPosition;
 
 
     public SingleNewsFragment() {
@@ -72,6 +82,7 @@ public class SingleNewsFragment extends Fragment {
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        currentPosition = 0;
         String customFont = "solaiman_lipi.ttf";
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), customFont);
 //        MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -82,29 +93,51 @@ public class SingleNewsFragment extends Fragment {
         imageView = (ImageView) view.findViewById(R.id.poster);
         newsTitle = (TextView) view.findViewById(R.id.newsTitle);
         writerText = (TextView) view.findViewById(R.id.writerText);
-        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_CONTENT)) {
-            pageUrl = getArguments().getString(AppConstant.SELECTED_ITEM_CONTENT);
-        }
+        frameLayout = (FrameLayout)view.findViewById(R.id.itemLayout);
+        nextTitle = (TextView)view.findViewById(R.id.nextNewsTitle);
+        nextImage = (ImageView) view.findViewById(R.id.nextImage);
 
-        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_TITLE)) {
-            if (getArguments().getString(AppConstant.SELECTED_ITEM_TITLE) != null)
-                newsTitle.setText(getArguments().getString(AppConstant.SELECTED_ITEM_TITLE));
+        childList = new ArrayList<>();
+
+
+        if (getArguments().containsKey("childList")) {
+            String str = getArguments().getString("childList");
+            if(str!=null )
+            childList = parseNewsList(str);
+            setAllNews();
         }
-        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_LINK)) {
-            try {
-                if (getArguments().getString(AppConstant.SELECTED_ITEM_LINK) != null)
-                    loadImage(getArguments().getString(AppConstant.SELECTED_ITEM_LINK)).into(imageView);
-            } catch (Exception e) {
-                e.printStackTrace();
+        frameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currentPosition++;
+                setAllNews();
             }
-        }
-        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_AUTHOR)) {
-            if (getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR) != null)
-                writerText.setText(getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR));
-        }
+        });
 
 
-        loadWebView(pageUrl);
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_CONTENT)) {
+//            pageUrl = getArguments().getString(AppConstant.SELECTED_ITEM_CONTENT);
+//        }
+//
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_TITLE)) {
+//            if (getArguments().getString(AppConstant.SELECTED_ITEM_TITLE) != null)
+//                newsTitle.setText(getArguments().getString(AppConstant.SELECTED_ITEM_TITLE));
+//        }
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_LINK)) {
+//            try {
+//                if (getArguments().getString(AppConstant.SELECTED_ITEM_LINK) != null)
+//                    loadImage(getArguments().getString(AppConstant.SELECTED_ITEM_LINK)).into(imageView);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_AUTHOR)) {
+//            if (getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR) != null)
+//                writerText.setText(getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR));
+//        }
+
+
+
 
     }
 
@@ -116,7 +149,16 @@ public class SingleNewsFragment extends Fragment {
                 .crossFade();
     }
 
-    private void loadWebView(String pageLink) {
+    private DrawableRequestBuilder<String> loadThumbImage(@NonNull String posterPath) {
+        return Glide
+                .with(getActivity())
+                .load(posterPath)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)   // cache both original & resized image
+                .centerCrop()
+                .crossFade();
+    }
+
+    private void loadWebView(String pageContent) {
         if (!NetworkConnection.getInstance().isNetworkAvailable()) {
             //Toast.makeText(getActivity(), "No Connectivity", Toast.LENGTH_SHORT).show();
             showAlert();
@@ -233,8 +275,9 @@ public class SingleNewsFragment extends Fragment {
 //        webView.loadUrl(pageLink);
         // webView.loadData(pageLink, "text/html", "UTF-8");
         //webView.loadDataWithBaseURL(null, changedHeaderHtml(pageLink), "text/html", "UTF-8", null);
+//        "file:///android_asset/my_page.html"   "<style>img{display: inline;height: auto;max-width: 100%;}</style>" +
         try {
-            webView.loadDataWithBaseURL("file:///android_asset/my_page.html", "<style>img{display: inline;height: auto;max-width: 100%;}</style>" + pageLink, "text/html", "UTF-8", null);
+            webView.loadDataWithBaseURL(null,  "<style>img{display: inline;height: auto;max-width: 100%;} iframe{display: inline;height: auto;max-width: 100%;}</style>" +pageContent, "text/html", "UTF-8", null);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -270,7 +313,7 @@ public class SingleNewsFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                loadWebView(pageUrl);
+                loadWebView(pageContent);
             }
         });
         builder.setNegativeButton("বাহির হোন", new DialogInterface.OnClickListener() {
@@ -291,5 +334,34 @@ public class SingleNewsFragment extends Fragment {
         String closedTag = "</body></html>";
         String changeFontHtml = head + htmlText + closedTag;
         return changeFontHtml;
+    }
+
+    private List<CategoryModel> parseNewsList(String object) {
+
+        List<CategoryModel> tags = new ArrayList<CategoryModel>();
+        Type listType = new TypeToken<List<CategoryModel>>() {
+        }.getType();
+        tags = new Gson().fromJson(object, listType);
+        return tags;
+    }
+
+    private void setAllNews(){
+        if(childList.size()>0)
+        {
+            pageContent = childList.get(currentPosition).getContent().getMainConten();
+            newsTitle.setText(childList.get(currentPosition).getTitle().getRendered());
+            writerText.setText(childList.get(currentPosition).getEmbedded().getAuthor().get(0).get("name").getAsString());
+            loadImage(childList.get(currentPosition).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(imageView);
+        }
+        if((currentPosition +1)< childList.size())
+        {
+            frameLayout.setVisibility(View.VISIBLE);
+            nextTitle.setText(childList.get(currentPosition+1).getTitle().getRendered());
+            loadThumbImage(childList.get(currentPosition+1).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(nextImage);
+        }
+        else {
+            frameLayout.setVisibility(View.GONE);
+        }
+        loadWebView(pageContent);
     }
 }

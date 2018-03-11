@@ -34,34 +34,34 @@
         android:orientation="vertical"
         android:padding="@dimen/activity_margin">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
 
             <TextView
                 android:id="@+id/movie_title"
                 style="@style/TextAppearance.AppCompat.Subhead.Inverse"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLength="40"
-                android:maxLines="1"
-                tools:text="Doctor Who : The Day of the Doctor"/>
-
-            <TextView
-                android:id="@+id/movie_year"
-                style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:alpha="0.4"
-                android:gravity="end"
-                android:maxLines="1"
-                android:textColor="@android:color/white"
-                android:textStyle="bold"
-                tools:text="2009 | EN"/>
+                android:ellipsize="end"
+                android:maxLines="2"
+                tools:text="Doctor Who : The Day of the Doctor"/>
 
-        </LinearLayout>
+        <!--android:maxLength="40"-->
+            <!--<TextView-->
+                <!--android:id="@+id/movie_year"-->
+                <!--style="@style/TextAppearance.AppCompat.Caption"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:alpha="0.4"-->
+                <!--android:gravity="end"-->
+                <!--android:maxLines="1"-->
+                <!--android:textColor="@android:color/white"-->
+                <!--android:textStyle="bold"-->
+                <!--tools:text="2009 | EN"/>-->
+
+        <!--</LinearLayout>-->
 
         <TextView
             android:id="@+id/movie_desc"

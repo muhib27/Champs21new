@@ -36,7 +36,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/activity_margin_content"
             android:text="@string/btn_retry"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/colorAccent"/>
 
     </LinearLayout>
 

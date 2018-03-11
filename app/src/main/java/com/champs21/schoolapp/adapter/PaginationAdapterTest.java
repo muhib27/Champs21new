@@ -339,7 +339,7 @@ public class PaginationAdapterTest extends RecyclerView.Adapter<RecyclerView.Vie
 
             mMovieTitle = (TextView) itemView.findViewById(R.id.movie_title);
             mMovieDesc = (TextView) itemView.findViewById(R.id.movie_desc);
-            mYear = (TextView) itemView.findViewById(R.id.movie_year);
+//            mYear = (TextView) itemView.findViewById(R.id.movie_year);
             mPosterImg = (ImageView) itemView.findViewById(R.id.movie_poster);
         }
     }

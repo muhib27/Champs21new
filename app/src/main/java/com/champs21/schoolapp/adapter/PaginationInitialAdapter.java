@@ -132,12 +132,21 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 topItem.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        int next=0;
+                        if(position>4)
+                            next = 5;
+                        else
+                            next = 1;
+                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, position+next));
+                        String str = new Gson().toJson(childList);
+                        bundle.putString("childList", str);
                         //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
 
-                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
-                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
-                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
-                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -171,11 +180,19 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        int next=0;
+                        if(position>4)
+                         next = 5-(position%6);
+                        else
+                            next = 1;
+                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, position+next));
+                        String str = new Gson().toJson(childList);
+                        bundle.putString("childList", str);
                         //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
-                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
-                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
-                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
-                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -425,7 +442,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 
             mMovieTitle = (TextView) itemView.findViewById(R.id.movie_title);
             mMovieDesc = (TextView) itemView.findViewById(R.id.movie_desc);
-            mYear = (TextView) itemView.findViewById(R.id.movie_year);
+//            mYear = (TextView) itemView.findViewById(R.id.movie_year);
             mPosterImg = (ImageView) itemView.findViewById(R.id.movie_poster);
             cardView = (CardView)itemView.findViewById(R.id.cardView);
         }
