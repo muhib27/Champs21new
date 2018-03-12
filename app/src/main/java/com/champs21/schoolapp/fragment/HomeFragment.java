@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -144,6 +145,8 @@ public class HomeFragment extends Fragment implements SwipeRefreshLayout.OnRefre
 
 
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
+//        DividerItemDecoration itemDecor = new DividerItemDecoration(getActivity(), DividerItemDecoration.HORIZONTAL);
+//        rv.addItemDecoration(itemDecor);
         progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
         errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
 

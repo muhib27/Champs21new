@@ -3,39 +3,48 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:checkable="false"
             android:id="@+id/news"
             android:icon="@drawable/news"
             android:title="@string/news" />
         <item
+            android:checkable="false"
             android:id="@+id/scitech"
             android:icon="@drawable/scitech"
             android:title="@string/scitech" />
         <item
+            android:checkable="false"
             android:id="@+id/apps_games"
             android:icon="@drawable/apps_games"
             android:title="@string/apps_games" />
 
         <item
+            android:checkable="false"
             android:id="@+id/champion"
             android:icon="@drawable/champion"
             android:title="@string/champion" />
         <item
+            android:checkable="false"
             android:id="@+id/life_style"
             android:icon="@drawable/life_style"
             android:title="@string/life_style" />
         <item
+            android:checkable="false"
             android:id="@+id/resource_center"
             android:icon="@drawable/resource_center"
             android:title="@string/resource_center" />
         <item
+            android:checkable="false"
             android:id="@+id/sports"
             android:icon="@drawable/sports"
             android:title="@string/sports" />
         <item
+            android:checkable="false"
             android:id="@+id/entertainment"
             android:icon="@drawable/entertainment"
             android:title="@string/entertainment" />
         <item
+            android:checkable="false"
             android:id="@+id/video"
             android:icon="@drawable/video"
             android:title="@string/video" />
@@ -56,10 +65,12 @@
     <item android:title="Communicate">
         <menu>
             <item
+                android:checkable="false"
                 android:id="@+id/about_us"
                 android:icon="@drawable/about_us_normal"
                 android:title="@string/about_us" />
             <item
+                android:checkable="false"
                 android:id="@+id/terms_policy"
                 android:icon="@drawable/terms_and_policy_normal"
                 android:title="@string/terms_policy" />

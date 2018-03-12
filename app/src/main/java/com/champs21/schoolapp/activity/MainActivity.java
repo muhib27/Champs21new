@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import com.champs21.schoolapp.R;
+import com.champs21.schoolapp.fragment.AppRelatedFragment;
 import com.champs21.schoolapp.fragment.HomeFragment;
 import com.champs21.schoolapp.fragment.MainFragment;
 import com.champs21.schoolapp.fragment.NewsFragment;
@@ -846,10 +847,16 @@ public class MainActivity extends AppCompatActivity
 //
 //        }
         else if (id == R.id.about_us) {
-            bundle.putString(AppConstant.SELECTED_ITEM, AppConstant.ABOUT_US);
+            bundle.putString("title", "About Us");
+            bundle.putString("description",
+                    getResources().getString(R.string.about_use_text));
+            gotoAppRelatedFragment(bundle);
 
         } else if (id == R.id.terms_policy) {
-            bundle.putString(AppConstant.SELECTED_ITEM, AppConstant.TERMS_POLICY);
+            bundle.putString("title", "Terms & Policy");
+            bundle.putString("description",
+                    getResources().getString(R.string.termsandpolicy_text));
+            gotoAppRelatedFragment(bundle);
 
         }
 
@@ -874,6 +881,14 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         paginationSingleFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, paginationSingleFragment, "paginationSingleFragment").addToBackStack(null);
+        transaction.commit();
+    }
+    private void gotoAppRelatedFragment(Bundle bundle) {
+        AppRelatedFragment appRelatedFragment = new AppRelatedFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        appRelatedFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, appRelatedFragment, "appRelatedFragment").addToBackStack(null);
         transaction.commit();
     }
 

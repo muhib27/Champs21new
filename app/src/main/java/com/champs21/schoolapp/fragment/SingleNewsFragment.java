@@ -28,6 +28,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.DrawableRequestBuilder;
@@ -58,7 +59,7 @@ public class SingleNewsFragment extends Fragment{
     private ImageView imageView, nextImage;
     private TextView writerText;
     private List<CategoryModel> childList;
-    private FrameLayout frameLayout;
+    private LinearLayout frameLayout;
     private static int currentPosition;
 
 
@@ -93,7 +94,7 @@ public class SingleNewsFragment extends Fragment{
         imageView = (ImageView) view.findViewById(R.id.poster);
         newsTitle = (TextView) view.findViewById(R.id.newsTitle);
         writerText = (TextView) view.findViewById(R.id.writerText);
-        frameLayout = (FrameLayout)view.findViewById(R.id.itemLayout);
+        frameLayout = (LinearLayout)view.findViewById(R.id.itemLayout);
         nextTitle = (TextView)view.findViewById(R.id.nextNewsTitle);
         nextImage = (ImageView) view.findViewById(R.id.nextImage);
 
@@ -356,8 +357,10 @@ public class SingleNewsFragment extends Fragment{
         if((currentPosition +1)< childList.size())
         {
             frameLayout.setVisibility(View.VISIBLE);
-            nextTitle.setText(childList.get(currentPosition+1).getTitle().getRendered());
-            loadThumbImage(childList.get(currentPosition+1).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(nextImage);
+            if(childList.get(currentPosition+1).getTitle().getRendered()!=null) {
+                nextTitle.setText(childList.get(currentPosition + 1).getTitle().getRendered());
+                loadThumbImage(childList.get(currentPosition + 1).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(nextImage);
+            }
         }
         else {
             frameLayout.setVisibility(View.GONE);

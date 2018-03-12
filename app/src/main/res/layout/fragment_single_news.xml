@@ -20,6 +20,7 @@
             android:orientation="vertical">
 
             <TextView
+                android:paddingLeft="@dimen/size_10dp"
                 android:id="@+id/newsTitle"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
@@ -30,6 +31,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:paddingLeft="@dimen/size_10dp"
                 android:id="@+id/writerText"
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"

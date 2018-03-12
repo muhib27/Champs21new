@@ -34,6 +34,7 @@ import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.model.Result;
 import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.PaginationAdapterCallback;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,12 +113,16 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
             topItem.cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, (movieResults.size()-1)));
+                    String str = new Gson().toJson(childList);
+                    bundle.putString("childList", str);
+
                     //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
 
-                    bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
-                    bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
-                    bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
-                    bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
+//                    bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+//                    bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+//                    bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+//                    bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
                     gotoSingleNewsFragment(bundle);
                 }
             });
@@ -136,11 +141,15 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, (movieResults.size()-1)));
+                        String str = new Gson().toJson(childList);
+                        bundle.putString("childList", str);
                         //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
-                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
-                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
-                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
-                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
+//                        bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
                         gotoSingleNewsFragment(bundle);
                     }
                 });

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/itemLayout"
@@ -8,86 +8,93 @@
     android:orientation="vertical">
 
     <TextView
-        android:textStyle="bold"
-        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/size_10dp"
         android:text="পরের সংবাদ  >> "
-        android:textSize="@dimen/text_size_20sp" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/text_size_20sp"
+        android:textStyle="bold" />
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/activity_margin_half"
         android:layout_marginTop="30dp"
-        android:orientation="horizontal">
-
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_margin_half"
-            app:cardBackgroundColor="@color/placeholder_grey"
-            app:cardCornerRadius="3dp"
-            app:cardPreventCornerOverlap="false">
-
-            <ProgressBar
-                android:id="@+id/movie_progress"
-                style="@style/Widget.AppCompat.ProgressBar"
-                android:layout_width="@dimen/activity_margin"
-                android:layout_height="@dimen/activity_margin"
-                android:layout_gravity="center"
-                android:theme="@style/CircularProgress" />
-
-            <ImageView
-                android:id="@+id/nextImage"
-                android:layout_width="@dimen/poster_thumb_width"
-                android:layout_height="@dimen/poster_thumb_height"
-                android:fitsSystemWindows="true"
-                android:src="@drawable/sample" />
-
-        </android.support.v7.widget.CardView>
+        app:cardCornerRadius="3dp"
+        app:cardPreventCornerOverlap="false">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:layout_marginTop="@dimen/activity_margin_half"
-            android:background="@android:color/transparent"
-            android:orientation="vertical"
-            android:paddingTop="@dimen/activity_margin_half">
+            android:orientation="horizontal">
 
-            <!--<TextView-->
-            <!--android:id="@+id/movie_year"-->
-            <!--style="@style/TextAppearance.AppCompat.Caption"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="@dimen/activity_margin_content"-->
-            <!--android:layout_marginStart="@dimen/activity_margin_content"-->
-            <!--android:alpha="0.38"-->
-            <!--android:gravity="end"-->
-            <!--android:maxLines="1"-->
-            <!--android:textStyle="bold"-->
-            <!--tools:text="2009 | EN" />-->
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin_half"
+                app:cardBackgroundColor="@color/placeholder_grey"
+                app:cardCornerRadius="3dp"
+                app:cardPreventCornerOverlap="false">
+
+                <ProgressBar
+                    android:id="@+id/movie_progress"
+                    style="@style/Widget.AppCompat.ProgressBar"
+                    android:layout_width="@dimen/activity_margin"
+                    android:layout_height="@dimen/activity_margin"
+                    android:layout_gravity="center"
+                    android:theme="@style/CircularProgress" />
+
+                <ImageView
+                    android:id="@+id/nextImage"
+                    android:layout_width="@dimen/poster_thumb_width"
+                    android:layout_height="@dimen/poster_thumb_height"
+                    android:fitsSystemWindows="true"
+                    android:src="@drawable/sample" />
+
+            </android.support.v7.widget.CardView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_gravity="top"
+                android:layout_marginTop="@dimen/activity_margin_half"
+                android:background="@android:color/transparent"
+                android:orientation="vertical"
+                android:paddingTop="@dimen/activity_margin_half">
 
-                <TextView
-                    android:id="@+id/nextNewsTitle"
-                    style="@style/TextAppearance.AppCompat.Subhead"
+                <!--<TextView-->
+                <!--android:id="@+id/movie_year"-->
+                <!--style="@style/TextAppearance.AppCompat.Caption"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="@dimen/activity_margin_content"-->
+                <!--android:layout_marginStart="@dimen/activity_margin_content"-->
+                <!--android:alpha="0.38"-->
+                <!--android:gravity="end"-->
+                <!--android:maxLines="1"-->
+                <!--android:textStyle="bold"-->
+                <!--tools:text="2009 | EN" />-->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/activity_margin_quarter"
-                    android:maxLines="2"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    tools:text="Movie Title" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/nextNewsTitle"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_margin_quarter"
+                        android:maxLines="2"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        tools:text="Movie Title" />
 
 
-            </LinearLayout>
+                </LinearLayout>
 
-            <!--<TextView-->
+                <!--<TextView-->
                 <!--android:id="@+id/movie_desc"-->
                 <!--style="@style/TextAppearance.AppCompat.Caption"-->
                 <!--android:layout_width="match_parent"-->
@@ -100,7 +107,9 @@
                 <!--android:textColor="@color/black"-->
                 <!--tools:text="Nowadays, user engagement is considered one of the most important metrics for the success of your app" />-->
 
-        </LinearLayout>
-    </LinearLayout>
+            </LinearLayout>
 
-</FrameLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
