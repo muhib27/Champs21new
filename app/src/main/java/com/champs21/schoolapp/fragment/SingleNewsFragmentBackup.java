@@ -2,31 +2,20 @@ package com.champs21.schoolapp.fragment;
 
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,22 +26,19 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.activity.MainActivity;
 import com.champs21.schoolapp.model.CategoryModel;
-import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.DrawerLocker;
 import com.champs21.schoolapp.utils.NetworkConnection;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SingleNewsFragment extends Fragment{
+public class SingleNewsFragmentBackup extends Fragment{
     private WebView webView;
     private String pageContent = "";
     private TextView newsTitle, nextTitle;
@@ -63,7 +49,7 @@ public class SingleNewsFragment extends Fragment{
     private static int currentPosition;
 
 
-    public SingleNewsFragment() {
+    public SingleNewsFragmentBackup() {
         // Required empty public constructor
     }
 
@@ -115,6 +101,31 @@ public class SingleNewsFragment extends Fragment{
             }
         });
 
+
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_CONTENT)) {
+//            pageUrl = getArguments().getString(AppConstant.SELECTED_ITEM_CONTENT);
+//        }
+//
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_TITLE)) {
+//            if (getArguments().getString(AppConstant.SELECTED_ITEM_TITLE) != null)
+//                newsTitle.setText(getArguments().getString(AppConstant.SELECTED_ITEM_TITLE));
+//        }
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_LINK)) {
+//            try {
+//                if (getArguments().getString(AppConstant.SELECTED_ITEM_LINK) != null)
+//                    loadImage(getArguments().getString(AppConstant.SELECTED_ITEM_LINK)).into(imageView);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        if (getArguments().containsKey(AppConstant.SELECTED_ITEM_AUTHOR)) {
+//            if (getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR) != null)
+//                writerText.setText(getArguments().getString(AppConstant.SELECTED_ITEM_AUTHOR));
+//        }
+
+
+
+
     }
 
     private DrawableRequestBuilder<String> loadImage(@NonNull String posterPath) {
@@ -153,7 +164,105 @@ public class SingleNewsFragment extends Fragment{
             }
         });
 
+//        WebSettings webSetting = webView.getSettings();
+//        webSetting.setBuiltInZoomControls(true);
+//        webSetting.setDisplayZoomControls(false);
+//
+//        //webSetting.setUseWideViewPort(true);
+////        webSetting.setLoadWithOverviewMode(true);
+//        webSetting.setJavaScriptEnabled(true);
+//        webSetting.setDomStorageEnabled(true);
+//        webView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+//
+//        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        if (Build.VERSION.SDK_INT >= 19) {
+//            webView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+//        }
+//        else {
+//            webView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+//        }
+//
+//        webView .getSettings().setUseWideViewPort(true);
+//        webView .getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setJavaScriptEnabled(true);
+//        webView .getSettings().setDomStorageEnabled(true);
+//        webView .getSettings().setBuiltInZoomControls(true);
+//        webView .getSettings().setDisplayZoomControls(false);
+//        webView.setInitialScale(100);
 
+//        webView.getSettings().setDefaultTextEncodingName("utf-8");
+//        webView.setWebViewClient(new WebViewClient() {
+//            @Override
+//            @TargetApi(Build.VERSION_CODES.M)
+//            public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+//                //super.onReceivedError(view, request, error);
+//                //showAlert();
+//                final Uri uri = request.getUrl();
+//                handleError(view, error.getErrorCode(), error.getDescription().toString(), uri);
+//            }
+//
+//            @SuppressWarnings("deprecation")
+//            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+//                //super.onReceivedError(view, errorCode, description, failingUrl);
+//                //showAlert();
+//                final Uri uri = Uri.parse(failingUrl);
+//                handleError(view, errorCode, description, uri);
+//            }
+//
+//            private void handleError(WebView view, int errorCode, String description, final Uri uri) {
+////                final String host = uri.getHost();// e.g. "google.com"
+////                final String scheme = uri.getScheme();// e.g. "https"
+//                // TODO: logic
+//                try {
+//                    webView.stopLoading();
+//                } catch (Exception e) {
+//                }
+//
+//                if (webView.canGoBack()) {
+//                    webView.goBack();
+//                }
+//                showAlert();
+//            }
+//
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+//                return super.shouldOverrideUrlLoading(view, url);
+//            }
+//
+//            @Override
+//            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+//                return super.shouldOverrideUrlLoading(view, request);
+//            }
+//
+//            @Override
+//            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+//
+////                //if (!progressBar.isEnabled())
+////                    showProgress();
+//                    showProgress();
+//            }
+//
+//            @Override
+//            public void onPageFinished(WebView view, String url) {
+////                if (!progressBar.isEnabled())
+////                    hideProgress();
+//                    hideProgress();
+//            }
+//
+//            @Override
+//            public void onLoadResource(WebView view, String url) {
+//                super.onLoadResource(view, url);
+//            }
+//
+//            @Override
+//            public void onPageCommitVisible(WebView view, String url) {
+//                super.onPageCommitVisible(view, url);
+//            }
+//        });
+//        webView.loadUrl(pageLink);
+        // webView.loadData(pageLink, "text/html", "UTF-8");
+        //webView.loadDataWithBaseURL(null, changedHeaderHtml(pageLink), "text/html", "UTF-8", null);
+//        "file:///android_asset/my_page.html"   "<style>img{display: inline;height: auto;max-width: 100%;}</style>" +
         try {
             webView.loadDataWithBaseURL(null,  "<style>img{display: inline;height: auto;max-width: 100%;} iframe{display: inline;height: auto;max-width: 100%;}</style>" +pageContent, "text/html", "UTF-8", null);
         }catch (Exception e){
@@ -204,7 +313,15 @@ public class SingleNewsFragment extends Fragment{
         dialog.show();
 
     }
-    
+
+    public String changedHeaderHtml(String htmlText) {
+
+        String head = "<head><meta name=\"viewport\" content=\"width=device-width, user-scalable=yes\" /></head>";
+
+        String closedTag = "</body></html>";
+        String changeFontHtml = head + htmlText + closedTag;
+        return changeFontHtml;
+    }
 
     private List<CategoryModel> parseNewsList(String object) {
 

@@ -21,6 +21,7 @@ import com.champs21.schoolapp.fragment.AppRelatedFragment;
 import com.champs21.schoolapp.fragment.HomeFragment;
 import com.champs21.schoolapp.fragment.MainFragment;
 import com.champs21.schoolapp.fragment.NewsFragment;
+import com.champs21.schoolapp.fragment.PagerFragment;
 import com.champs21.schoolapp.fragment.PaginationSingleFragment;
 import com.champs21.schoolapp.fragment.PaginationHomeFragment;
 import com.champs21.schoolapp.model.CategoryModel;
@@ -800,43 +801,51 @@ public class MainActivity extends AppCompatActivity
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.NEWS);
             // gotoMainFragment(bundle);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            gotoPagerFragment(bundle);
+            //gotoPaginationSingleFragment(bundle);
         } else if (id == R.id.scitech) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SCITECH);
             //gotoPaginationTestFragment();
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            //gotoPaginationSingleFragment(bundle);
+            gotoPagerFragment(bundle);
 
         } else if (id == R.id.apps_games) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.APPS_GAMES);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            //gotoPaginationSingleFragment(bundle);
+            gotoPagerFragment(bundle);
         } else if (id == R.id.champion) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.CHAMPION);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            //gotoPaginationSingleFragment(bundle);
+            gotoPagerFragment(bundle);
         } else if (id == R.id.life_style) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.LIFE_STYLE);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            //gotoPaginationSingleFragment(bundle);
+            gotoPagerFragment(bundle);
         } else if (id == R.id.resource_center) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.RESOURCE_CENTER);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            //gotoPaginationSingleFragment(bundle);
+            gotoPagerFragment(bundle);
         } else if (id == R.id.sports) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SPORTS);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            //gotoPaginationSingleFragment(bundle);
+            gotoPagerFragment(bundle);
 
         } else if (id == R.id.entertainment) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.ENTERTAINMENT);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            //gotoPaginationSingleFragment(bundle);
+            gotoPagerFragment(bundle);
 
         } else if (id == R.id.video) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.VIDEO);
 //            gotoNewsFragment(bundle);
-            gotoPaginationTest(bundle);
+            gotoPaginationSingleFragment(bundle);
 
         }
 //        else if (id == R.id.travel) {
@@ -875,12 +884,20 @@ public class MainActivity extends AppCompatActivity
         transaction.commit();
     }
 
-    private void gotoPaginationTest(Bundle bundle) {
+    private void gotoPaginationSingleFragment(Bundle bundle) {
         PaginationSingleFragment paginationSingleFragment = new PaginationSingleFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         paginationSingleFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, paginationSingleFragment, "paginationSingleFragment").addToBackStack(null);
+        transaction.commit();
+    }
+    private void gotoPagerFragment(Bundle bundle) {
+        PagerFragment pagerFragment = new PagerFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        pagerFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, pagerFragment, "pagerFragment").addToBackStack(null);
         transaction.commit();
     }
     private void gotoAppRelatedFragment(Bundle bundle) {

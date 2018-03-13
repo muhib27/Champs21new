@@ -15,14 +15,14 @@
     <string name="news_articles"><![CDATA[News & Articles]]></string>
 
 
-    <string name="extra_curricular">Extra Curricular</string>
     <string name="fitness_health"><![CDATA[Fitness & Health]]></string>
     <string name="food_nutration"><![CDATA[Food & Nutration]]></string>
-    <string name="travel">Travel</string>
-    <string name="personality">Personality</string>
-    <string name="literature">Literature</string>
+
+    <!--<string name="literature">Literature</string>-->
     <string name="about_us">About Us</string>
     <string name="terms_policy"><![CDATA[Terms & Policy]]></string>
+
+    <string name="all_news">সব</string>
 
     <string name="news">খবর</string>
     <string name="scitech">বিজ্ঞানপ্রযুক্তি</string>
@@ -34,6 +34,47 @@
     <string name="entertainment">বিনোদন </string>
     <string name="video">ভিডিও </string>
     <string name="sample_text">Sample</string>
+
+    <string name="international">আন্তর্জাতিক</string>
+    <string name="bangladesh">বাংলাদেশ</string>
+
+    <string name="gadget">গ্যাজেট</string>
+    <string name="techworld">প্রযুক্তিবিশ্ব</string>
+
+    <string name="apps_review">অ্যাপস রিভিউ</string>
+
+    <string name="entrepreneur">উদ্যোক্তা</string>
+    <string name="personality">ব্যক্তিত্ব</string>
+    <string name="business">ব্যবসা</string>
+
+    <string name="extra_curricular">অতিরিক্ত পাঠ্যক্রম</string>
+    <string name="shopping">কেনাকাটা</string>
+    <string name="food">খাবার</string>
+    <string name="household">ঘরদোর</string>
+    <string name="job">চাকরি</string>
+    <string name="travel">ভ্রমণ</string>
+    <string name="recipes">রেসিপি</string>
+    <string name="health"> স্বাস্থ্য</string>
+
+    <string name="history">ইতিহাস</string>
+    <string name="flora_and_fauna">উদ্ভিদ ও প্রাণীজগত</string>
+    <string name="tradition">ঐতিহ্য</string>
+    <string name="math">গণিত</string>
+    <string name="geography">জিওগ্রাফি</string>
+    <string name="science">বিজ্ঞান</string>
+    <string name="rocking_experiments">রকিং এক্সপেরিমেন্টস</string>
+    <string name="teaching_resources">শিক্ষামূলক উপকরণ</string>
+    <string name="literature">সাহিত্য</string>
+
+    <string name="others">অন্যান্য</string>
+    <string name="cricket">ক্রিকেট</string>
+    <string name="tennis">টেনিস</string>
+    <string name="football">ফুটবল</string>
+
+    <string name="tv_show">টিভি শো</string>
+    <string name="music">মিউজিক</string>
+    <string name="cinema">সিনেমা</string>
+
     <!--<string name="fitness_health"><![CDATA[Fitness & Health]]></string>-->
     <!--<string name="food_nutration"><![CDATA[Food & Nutration]]></string>-->
     <!--<string name="travel">Travel</string>-->

@@ -35,4 +35,48 @@ public class AppConstant {
     public static final int SPORTS = 172;
     public static final int ENTERTAINMENT = 168;
     public static final int VIDEO = 138;
+
+
+    public static final int INTERNATIONAL = 141;
+    public static final int BANGLADESH = 140;
+
+    public static final int GADGET = 132;
+    public static final int TECHWORLD = 143;
+
+    public static final int APPS_REVIEW = 144;
+
+    public static final int ENTREPRENEUR = 172;
+    public static final int PERSONALITY = 168;
+    public static final int BUSINESS = 168;
+
+    public static final int EXTRA_CURRICULAR = 154;
+    public static final int SHOPPING = 133;
+    public static final int FOOD = 144;
+    public static final int HOUSEHOLD = 172;
+    public static final int JOB = 168;
+    public static final int TRAVEL = 138;
+    public static final int RECIPES = 168;
+    public static final int HEALTH = 138;
+
+
+    public static final int HISTORY = 154;
+    public static final int FLORA_AND_FAUNA = 133;
+    public static final int TRADITION = 144;
+    public static final int MATH = 172;
+    public static final int GEOGRAPHI = 168;
+    public static final int SCIENCE = 138;
+    public static final int ROCKING_EXPERIMENTS = 168;
+    public static final int TEACHING_RESOURCES = 138;
+    public static final int LITERATURE = 138;
+
+    public static final int OTHERS = 133;
+    public static final int CRICKET = 144;
+    public static final int TENNIS = 172;
+    public static final int FOOTBALL = 168;
+
+    public static final int TV_SHOW = 138;
+    public static final int MUSIC = 168;
+    public static final int CINEMA = 138;
+
+
 }
