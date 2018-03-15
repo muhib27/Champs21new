@@ -43,40 +43,40 @@ public class AppConstant {
     public static final int GADGET = 132;
     public static final int TECHWORLD = 143;
 
-    public static final int APPS_REVIEW = 144;
+    public static final int APPS_REVIEW = 179;
 
-    public static final int ENTREPRENEUR = 172;
-    public static final int PERSONALITY = 168;
-    public static final int BUSINESS = 168;
+    public static final int ENTREPRENEUR = 156;
+    public static final int PERSONALITY = 155;
+    public static final int BUSINESS = 134;
 
-    public static final int EXTRA_CURRICULAR = 154;
-    public static final int SHOPPING = 133;
-    public static final int FOOD = 144;
-    public static final int HOUSEHOLD = 172;
-    public static final int JOB = 168;
-    public static final int TRAVEL = 138;
-    public static final int RECIPES = 168;
-    public static final int HEALTH = 138;
+    public static final int EXTRA_CURRICULAR = 153;
+    public static final int SHOPPING = 165;
+    public static final int FOOD = 164;
+    public static final int HOUSEHOLD = 166;
+    public static final int JOB = 167;
+    public static final int TRAVEL = 137;
+    public static final int RECIPES = 136;
+    public static final int HEALTH = 135;
 
 
-    public static final int HISTORY = 154;
-    public static final int FLORA_AND_FAUNA = 133;
-    public static final int TRADITION = 144;
-    public static final int MATH = 172;
-    public static final int GEOGRAPHI = 168;
-    public static final int SCIENCE = 138;
-    public static final int ROCKING_EXPERIMENTS = 168;
-    public static final int TEACHING_RESOURCES = 138;
-    public static final int LITERATURE = 138;
+    public static final int HISTORY = 146;
+    public static final int FLORA_AND_FAUNA = 147;
+    public static final int TRADITION = 571;
+    public static final int MATH = 150;
+    public static final int GEOGRAPHI = 145;
+    public static final int SCIENCE = 152;
+    public static final int ROCKING_EXPERIMENTS = 148;
+    public static final int TEACHING_RESOURCES = 152;
+    public static final int LITERATURE = 182;
 
-    public static final int OTHERS = 133;
-    public static final int CRICKET = 144;
-    public static final int TENNIS = 172;
-    public static final int FOOTBALL = 168;
+    public static final int OTHERS = 176;
+    public static final int CRICKET = 173;
+    public static final int TENNIS = 175;
+    public static final int FOOTBALL = 174;
 
-    public static final int TV_SHOW = 138;
-    public static final int MUSIC = 168;
-    public static final int CINEMA = 138;
+    public static final int TV_SHOW = 171;
+    public static final int MUSIC = 169;
+    public static final int CINEMA = 170;
 
 
 }

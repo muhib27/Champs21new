@@ -32,7 +32,6 @@ import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.fragment.SingleNewsFragment;
 import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.model.Result;
-import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.PaginationAdapterCallback;
 import com.google.gson.Gson;
 
@@ -43,7 +42,7 @@ import java.util.List;
  * Created by Suleiman on 19/10/16.
  */
 
-public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class FourthAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     // View Types
     private static final int ITEM = 0;
@@ -63,7 +62,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private String errorMsg;
 
-    public PaginationSingleAdapter(Context context, PaginationAdapterCallback mCallback) {
+    public FourthAdapter(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
         this.mCallback = mCallback;
         movieResults = new ArrayList<>();

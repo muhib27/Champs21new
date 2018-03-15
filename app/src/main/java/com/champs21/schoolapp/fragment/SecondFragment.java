@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.activity.MainActivity;
 import com.champs21.schoolapp.adapter.PaginationSingleAdapter;
+import com.champs21.schoolapp.adapter.SecondAdapter;
 import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.model.Result;
 import com.champs21.schoolapp.model.TopRatedMovies;
@@ -55,7 +57,7 @@ import retrofit2.Response;
  */
 public class SecondFragment extends Fragment implements PaginationAdapterCallback {
 
-    PaginationSingleAdapter adapter;
+    SecondAdapter adapter;
     LinearLayoutManager linearLayoutManager;
 
     RecyclerView rv;
@@ -87,6 +89,16 @@ public class SecondFragment extends Fragment implements PaginationAdapterCallbac
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.activity_main_another, container, false);
     }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.v("onActivityCreated", "onActivityCreated");
+//        if(getArguments().containsKey(AppConstant.SELECTED_ITEM))
+//        {
+//            SELECTED = getArguments().getInt(AppConstant.SELECTED_ITEM);
+//        }
+//        callNewsApiFirst(SELECTED);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -109,7 +121,7 @@ public class SecondFragment extends Fragment implements PaginationAdapterCallbac
         btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
         txtError = (TextView) view.findViewById(R.id.error_txt_cause);
 
-        adapter = new PaginationSingleAdapter(getContext(), this);
+        adapter = new SecondAdapter(getContext(), this);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
@@ -287,7 +299,7 @@ public class SecondFragment extends Fragment implements PaginationAdapterCallbac
     }
 
     private void callNewsApiNext( int selected) {
-        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<List<CategoryModel>>>() {

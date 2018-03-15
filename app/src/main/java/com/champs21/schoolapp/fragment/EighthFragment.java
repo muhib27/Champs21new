@@ -160,7 +160,7 @@ public class EighthFragment extends Fragment implements PaginationAdapterCallbac
     private void callNewsApiFirst( int selected) {
         hideErrorView();
 
-        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<List<CategoryModel>>>() {

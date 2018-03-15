@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,7 +54,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ninthFragment extends Fragment implements PaginationAdapterCallback {
+public class GadgetFragment extends Fragment implements PaginationAdapterCallback {
 
     PaginationSingleAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -76,16 +77,26 @@ public class ninthFragment extends Fragment implements PaginationAdapterCallback
     private int SELECTED;
 
 
-    public ninthFragment() {
+    public GadgetFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_main_another, container, false);
+
+
+        return  inflater.inflate(R.layout.activity_main_another, container, false);
+    }
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.v("onActivityCreated", "onActivityCreated");
+
+        callNewsApiFirst(AppConstant.GADGET);
     }
 
     @Override
@@ -157,7 +168,7 @@ public class ninthFragment extends Fragment implements PaginationAdapterCallback
 
     }
 
-    private void callNewsApiFirst( int selected) {
+    public void callNewsApiFirst( int selected) {
         hideErrorView();
 
         RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)

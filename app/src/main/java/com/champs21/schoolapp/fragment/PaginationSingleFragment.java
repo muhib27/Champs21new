@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,12 +95,8 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_main_another, container, false);
-    }
+        View view = inflater.inflate(R.layout.activity_main_another, container, false);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -164,12 +161,24 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
             }
         });
 
+        return view;
+    }
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.v("onActivityCreated", "onActivityCreated");
+//        callNewsApiFirst(SELECTED);
     }
 
-    private void callNewsApiFirst( int selected) {
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//    }
+
+    public void callNewsApiFirst( int selected) {
         hideErrorView();
 
-        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<List<CategoryModel>>>() {

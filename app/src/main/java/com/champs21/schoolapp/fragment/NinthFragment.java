@@ -53,7 +53,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SixthFragment extends Fragment implements PaginationAdapterCallback {
+public class NinthFragment extends Fragment implements PaginationAdapterCallback {
 
     PaginationSingleAdapter adapter;
     LinearLayoutManager linearLayoutManager;
@@ -76,7 +76,7 @@ public class SixthFragment extends Fragment implements PaginationAdapterCallback
     private int SELECTED;
 
 
-    public SixthFragment() {
+    public NinthFragment() {
         // Required empty public constructor
     }
 

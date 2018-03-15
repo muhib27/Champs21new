@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.fragment.AppRelatedFragment;
+import com.champs21.schoolapp.fragment.EntertainmentPagerFragment;
 import com.champs21.schoolapp.fragment.HomeFragment;
 import com.champs21.schoolapp.fragment.MainFragment;
 import com.champs21.schoolapp.fragment.NewsFragment;
@@ -898,6 +899,14 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         pagerFragment.setArguments(bundle);
         transaction.replace(R.id.main_acitivity_container, pagerFragment, "pagerFragment").addToBackStack(null);
+        transaction.commit();
+    }
+    private void gotoEntertainmentPagerFragment(Bundle bundle) {
+        EntertainmentPagerFragment entertainmentPagerFragment = new EntertainmentPagerFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        entertainmentPagerFragment.setArguments(bundle);
+        transaction.replace(R.id.main_acitivity_container, entertainmentPagerFragment, "entertainmentPagerFragment").addToBackStack(null);
         transaction.commit();
     }
     private void gotoAppRelatedFragment(Bundle bundle) {

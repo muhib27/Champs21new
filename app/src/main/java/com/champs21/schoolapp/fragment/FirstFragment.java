@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.activity.MainActivity;
+import com.champs21.schoolapp.adapter.FirstAdapter;
 import com.champs21.schoolapp.adapter.PaginationSingleAdapter;
 import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.model.Result;
@@ -55,7 +57,7 @@ import retrofit2.Response;
  */
 public class FirstFragment extends Fragment implements PaginationAdapterCallback {
 
-    PaginationSingleAdapter adapter;
+    FirstAdapter adapter;
     LinearLayoutManager linearLayoutManager;
 
     RecyclerView rv;
@@ -85,12 +87,14 @@ public class FirstFragment extends Fragment implements PaginationAdapterCallback
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_main_another, container, false);
-    }
+        View view = inflater.inflate(R.layout.activity_main_another, container, false);
+        rv = (RecyclerView) view.findViewById(R.id.main_recycler);
+        progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
+        errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
+        btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
+        txtError = (TextView) view.findViewById(R.id.error_txt_cause);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        Log.v("onActivityCreated", "onActivityCreated");
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -103,13 +107,8 @@ public class FirstFragment extends Fragment implements PaginationAdapterCallback
         }
 //        listTopic = new ArrayList<>();
         //MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-        rv = (RecyclerView) view.findViewById(R.id.main_recycler);
-        progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
-        errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
-        btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
-        txtError = (TextView) view.findViewById(R.id.error_txt_cause);
 
-        adapter = new PaginationSingleAdapter(getContext(), this);
+        adapter = new FirstAdapter(getContext(), this);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
@@ -155,12 +154,85 @@ public class FirstFragment extends Fragment implements PaginationAdapterCallback
             }
         });
 
+        return view;
     }
+
+
+
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
+//            MainActivity.toggle.setDrawerIndicatorEnabled(false);
+//            ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        }
+//        ((DrawerLocker) getActivity()).setDrawerEnabled(false);
+//
+//        if(getArguments().containsKey(AppConstant.SELECTED_ITEM))
+//        {
+//            SELECTED = getArguments().getInt(AppConstant.SELECTED_ITEM);
+//        }
+////        listTopic = new ArrayList<>();
+//        //MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        rv = (RecyclerView) view.findViewById(R.id.main_recycler);
+//        progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
+//        errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
+//        btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
+//        txtError = (TextView) view.findViewById(R.id.error_txt_cause);
+//
+//        adapter = new PaginationSingleAdapter(getContext(), this);
+//
+//        linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        rv.setLayoutManager(linearLayoutManager);
+//        rv.setItemAnimator(new DefaultItemAnimator());
+//
+//
+//        rv.addOnScrollListener(new PaginationScrollListener(linearLayoutManager) {
+//            @Override
+//            protected void loadMoreItems() {
+//                isLoading = true;
+////                currentPage = 15;
+//                currentOffst += 15;
+//
+//                //loadNextPage();
+//                callNewsApiNext(SELECTED);
+//            }
+//
+//            @Override
+//            public int getTotalPageCount() {
+//                return TOTAL_ITEM;
+//            }
+//
+//            @Override
+//            public boolean isLastPage() {
+//                return isLastPage;
+//            }
+//
+//            @Override
+//            public boolean isLoading() {
+//                return isLoading;
+//            }
+//        });
+//
+//        rv.setAdapter(adapter);
+////        loadFirstPage();
+//        callNewsApiFirst(SELECTED);
+//
+//        btnRetry.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //loadFirstPage();
+//                callNewsApiFirst(SELECTED);
+//            }
+//        });
+//
+//    }
 
     private void callNewsApiFirst( int selected) {
         hideErrorView();
 
-        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<List<CategoryModel>>>() {
@@ -287,7 +359,7 @@ public class FirstFragment extends Fragment implements PaginationAdapterCallback
     }
 
     private void callNewsApiNext( int selected) {
-        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, 0)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<List<CategoryModel>>>() {
