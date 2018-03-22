@@ -6,6 +6,8 @@ package com.champs21.schoolapp.utils;
 
 public class AppConstant {
     public static final String SELECTED_ITEM = "selected";
+    public static final String SEARCH_TEXT= "search";
+    public static final String TITLE = "title";
     public static final String SELECTED_ITEM_LINK = "link";
     public static final String SELECTED_ITEM_TITLE = "title";
     public static final String SELECTED_ITEM_CONTENT = "content";

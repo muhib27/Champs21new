@@ -145,9 +145,9 @@ public class PaginationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                                         shareIntent.putExtra(Intent.EXTRA_TEXT, "http://codepath.com");
                                         context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
                                         break;
-                                    case R.id.save:
-                                        //handle menu2 click
-                                        break;
+//                                    case R.id.save:
+//                                        //handle menu2 click
+//                                        break;
                                 }
                                 return false;
                             }

@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -17,6 +18,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.JavascriptInterface;
@@ -47,6 +50,7 @@ import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -58,9 +62,11 @@ public class SingleNewsFragment extends Fragment{
     private TextView newsTitle, nextTitle;
     private ImageView imageView, nextImage;
     private TextView writerText;
+    private TextView footerText;
     private List<CategoryModel> childList;
     private LinearLayout frameLayout;
     private static int currentPosition;
+    private String[] monthArray = {" জানুয়ারী "," ফেব্রূয়ারি ", " মার্চ ", " এপ্রিল ", " মে ", " জুন ", " জুলাই ", " অগাস্ট ", " সেপ্টেম্বর ", " অক্টোবর ", " নভেম্বর ", " ডিসেম্বর "};
 
 
     public SingleNewsFragment() {
@@ -79,10 +85,13 @@ public class SingleNewsFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        String footerString = "© চ্যাম্পস টোয়েন্টিওয়ান ডটকম ২০১০-" + getdateInBangla(year);
         currentPosition = 0;
         String customFont = "solaiman_lipi.ttf";
         Typeface typeface = Typeface.createFromAsset(getActivity().getAssets(), customFont);
@@ -96,7 +105,9 @@ public class SingleNewsFragment extends Fragment{
         writerText = (TextView) view.findViewById(R.id.writerText);
         frameLayout = (LinearLayout)view.findViewById(R.id.itemLayout);
         nextTitle = (TextView)view.findViewById(R.id.nextNewsTitle);
+        footerText = (TextView)view.findViewById(R.id.footerText);
         nextImage = (ImageView) view.findViewById(R.id.nextImage);
+        footerText.setText(footerString);
 
         childList = new ArrayList<>();
 
@@ -140,6 +151,8 @@ public class SingleNewsFragment extends Fragment{
             showAlert();
             return;
         }
+        showProgress();
+        webView.getSettings().setJavaScriptEnabled(true);
 
 
         webView.setWebChromeClient(new WebChromeClient() {
@@ -220,7 +233,7 @@ public class SingleNewsFragment extends Fragment{
         {
             pageContent = childList.get(currentPosition).getContent().getMainConten();
             newsTitle.setText(childList.get(currentPosition).getTitle().getRendered());
-            writerText.setText(childList.get(currentPosition).getEmbedded().getAuthor().get(0).get("name").getAsString());
+            writerText.setText(childList.get(currentPosition).getEmbedded().getAuthor().get(0).get("name").getAsString() +" | " + parseDate(childList.get(currentPosition).getNewsDate()));
             loadImage(childList.get(currentPosition).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(imageView);
         }
         if((currentPosition +1)< childList.size())
@@ -235,5 +248,77 @@ public class SingleNewsFragment extends Fragment{
             frameLayout.setVisibility(View.GONE);
         }
         loadWebView(pageContent);
+    }
+
+
+    public String getdateInBangla(String string)
+    {
+        Character bangla_number[]={'০','১','২','৩','৪','৫','৬','৭','৮','৯'};
+        Character eng_number[]={'0','1','2','3','4','5','6','7','8','9'};
+        String values = "";
+        char[] character = string.toCharArray();
+        for (int i=0; i<character.length ; i++) {
+            Character c = ' ';
+            for (int j = 0; j < eng_number.length; j++) {
+                if(character[i]==eng_number[j])
+                {
+                    c=bangla_number[j];
+                    break;
+                }else {
+                    c=character[i];
+                }
+            }
+            values=values + c;
+        }
+        return values;
+    }
+
+    private String parseDate(String rowString){
+        String[] parts = rowString.split("T");
+        String dateString = parts[0];
+        String timeString = parts[1];
+        String year="", month="", day="", hour="", mimutes="";
+
+        if(dateString!=null && dateString.contains("-")) {
+            String[] dateSubString = dateString.split("-");
+            year = getdateInBangla(dateSubString[0]);
+
+            month= monthArray[Integer.parseInt(String.valueOf(dateSubString[1]))-1];
+            day = getdateInBangla(dateSubString[2]);
+        }
+        if(timeString!= null && timeString.contains(":"))
+        {
+            String[] timeSubString = timeString.split(":");
+            hour = getdateInBangla(timeSubString[0]);
+            mimutes = getdateInBangla(timeSubString[1]);
+        }
+        return day + month + year + ", " + hour + ":" + mimutes;
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem shareItem = menu.findItem(R.id.mShare);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
+        shareItem.setVisible(true);
+        shareItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                //Toast.makeText(getActivity(), "ddd", Toast.LENGTH_LONG).show();
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, childList.get(currentPosition).getTitle().getRendered());
+                shareIntent.putExtra(Intent.EXTRA_TITLE, childList.get(currentPosition).getTitle().getRendered());
+                shareIntent.putExtra(Intent.EXTRA_TEXT, childList.get(currentPosition).getLink());
+                getActivity().startActivity(Intent.createChooser(shareIntent, "Share link using"));
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 }

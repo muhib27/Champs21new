@@ -1,8 +1,12 @@
 package com.champs21.schoolapp.activity;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.internal.NavigationMenuView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,16 +19,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
+import android.support.v7.widget.SearchView;
+import android.widget.Toast;
 
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.fragment.AppRelatedFragment;
 import com.champs21.schoolapp.fragment.EntertainmentPagerFragment;
 import com.champs21.schoolapp.fragment.HomeFragment;
+import com.champs21.schoolapp.fragment.HomeFragmentTest;
+import com.champs21.schoolapp.fragment.HomeFragmentTestOne;
+import com.champs21.schoolapp.fragment.HomeFragmentTwo;
 import com.champs21.schoolapp.fragment.MainFragment;
 import com.champs21.schoolapp.fragment.NewsFragment;
 import com.champs21.schoolapp.fragment.PagerFragment;
 import com.champs21.schoolapp.fragment.PaginationSingleFragment;
 import com.champs21.schoolapp.fragment.PaginationHomeFragment;
+import com.champs21.schoolapp.fragment.SearchResultFragment;
 import com.champs21.schoolapp.model.CategoryModel;
 
 import com.champs21.schoolapp.model.Result;
@@ -79,7 +90,8 @@ public class MainActivity extends AppCompatActivity
         si = 0;
         listTopic = new ArrayList<>();
         results.clear();
-        callChainApi();
+        //callChainApi();
+        gotoHomeFragment();
 
 //        for (int i = 0; i < menuArray.length; i++)
 //            callNewsApiFirst(menuArray[i], i);
@@ -694,6 +706,8 @@ public class MainActivity extends AppCompatActivity
                         }
                     });
                 } else {
+                    setDrawerEnabled(true);
+                    getSupportActionBar().setTitle("");
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                     toggle.setDrawerIndicatorEnabled(true);
 //                    toggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
@@ -763,9 +777,41 @@ public class MainActivity extends AppCompatActivity
 //        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
 //        this.menu = menu;  // this will copy menu values to upper defined menu so that we can change icon later akash
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        final  MenuItem miSearch = menu.findItem(R.id.action_search);
+
+        SearchManager searchManager = (SearchManager)getSystemService(Context.SEARCH_SERVICE);
+
+        searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        EditText searchEditText = (EditText) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(Color.BLACK);
+        searchEditText.setHintTextColor(getResources().getColor(R.color.colorAccent));
+
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                SearchResultFragment fragment = (SearchResultFragment)getSupportFragmentManager().findFragmentByTag("searchResultFragment");
+                if(fragment!=null && fragment.isVisible())
+                    getSupportFragmentManager().popBackStack();
+                miSearch.collapseActionView();
+                Bundle bundle = new Bundle();
+                //Toast.makeText(getApplicationContext(),"clicked",Toast.LENGTH_SHORT).show();
+                bundle.putString(AppConstant.SEARCH_TEXT, query);
+                gotoSearchResultFragment(bundle);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
 
         return true;
     }
+    SearchView searchView;
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
@@ -774,20 +820,21 @@ public class MainActivity extends AppCompatActivity
 //        return true;
 //    }
 //
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+//        switch (item.getItemId()){
+//            case R.id.action_search:
+//                Toast.makeText(getApplicationContext(),"clicked",Toast.LENGTH_SHORT).show();
 //        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -800,12 +847,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.news) {
             // Handle the camera action
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.NEWS);
+            bundle.putString(AppConstant.TITLE, getString(R.string.news));
             // gotoMainFragment(bundle);
 //            gotoNewsFragment(bundle);
             gotoPagerFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
         } else if (id == R.id.scitech) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SCITECH);
+            bundle.putString(AppConstant.TITLE, getString(R.string.scitech));
             //gotoPaginationTestFragment();
 //            gotoNewsFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
@@ -813,38 +862,45 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.apps_games) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.APPS_GAMES);
+            bundle.putString(AppConstant.TITLE, getString(R.string.apps_games));
 //            gotoNewsFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
             gotoPagerFragment(bundle);
         } else if (id == R.id.champion) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.CHAMPION);
+            bundle.putString(AppConstant.TITLE, getString(R.string.champion));
 //            gotoNewsFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
             gotoPagerFragment(bundle);
         } else if (id == R.id.life_style) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.LIFE_STYLE);
+            bundle.putString(AppConstant.TITLE, getString(R.string.life_style));
 //            gotoNewsFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
             gotoPagerFragment(bundle);
         } else if (id == R.id.resource_center) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.RESOURCE_CENTER);
+            bundle.putString(AppConstant.TITLE, getString(R.string.resource_center));
 //            gotoNewsFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
             gotoPagerFragment(bundle);
         } else if (id == R.id.sports) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.SPORTS);
+            bundle.putString(AppConstant.TITLE, getString(R.string.sports));
 //            gotoNewsFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
             gotoPagerFragment(bundle);
 
         } else if (id == R.id.entertainment) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.ENTERTAINMENT);
+            bundle.putString(AppConstant.TITLE, getString(R.string.entertainment));
 //            gotoNewsFragment(bundle);
             //gotoPaginationSingleFragment(bundle);
             gotoPagerFragment(bundle);
 
         } else if (id == R.id.video) {
             bundle.putInt(AppConstant.SELECTED_ITEM, AppConstant.VIDEO);
+            bundle.putString(AppConstant.TITLE, getString(R.string.video));
 //            gotoNewsFragment(bundle);
             gotoPaginationSingleFragment(bundle);
 
@@ -890,7 +946,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         paginationSingleFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, paginationSingleFragment, "paginationSingleFragment").addToBackStack(null);
+        transaction.add(R.id.main_acitivity_container, paginationSingleFragment, "paginationSingleFragment").addToBackStack(null);
         transaction.commit();
     }
     private void gotoPagerFragment(Bundle bundle) {
@@ -898,15 +954,15 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         pagerFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, pagerFragment, "pagerFragment").addToBackStack(null);
+        transaction.add(R.id.main_acitivity_container, pagerFragment, "pagerFragment").addToBackStack(null);
         transaction.commit();
     }
-    private void gotoEntertainmentPagerFragment(Bundle bundle) {
-        EntertainmentPagerFragment entertainmentPagerFragment = new EntertainmentPagerFragment();
+    private void gotoSearchResultFragment(Bundle bundle) {
+        SearchResultFragment searchResultFragment = new SearchResultFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        entertainmentPagerFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, entertainmentPagerFragment, "entertainmentPagerFragment").addToBackStack(null);
+        searchResultFragment.setArguments(bundle);
+        transaction.add(R.id.main_acitivity_container, searchResultFragment, "searchResultFragment").addToBackStack(null);
         transaction.commit();
     }
     private void gotoAppRelatedFragment(Bundle bundle) {
@@ -914,14 +970,15 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         appRelatedFragment.setArguments(bundle);
-        transaction.replace(R.id.main_acitivity_container, appRelatedFragment, "appRelatedFragment").addToBackStack(null);
+        transaction.add(R.id.main_acitivity_container, appRelatedFragment, "appRelatedFragment").addToBackStack(null);
         transaction.commit();
     }
 
     private void gotoHomeFragment() {
         try {
             hideProgressDialog();
-            HomeFragment homeFragment = new HomeFragment();
+            //HomeFragment homeFragment = new HomeFragment();
+            HomeFragmentTwo homeFragment = new HomeFragmentTwo();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 //        paginationSingleFragment.setArguments(bundle);
@@ -940,6 +997,22 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerLockMode(lockMode);
         toggle.setDrawerIndicatorEnabled(enabled);
     }
+//
+//    @Override
+//    public boolean onQueryTextSubmit(String s) {
+//        searchView.setIconified(true);
+//        searchView.clearFocus();
+//        Bundle bundle = new Bundle();
+//        Toast.makeText(getApplicationContext(),"clicked",Toast.LENGTH_SHORT).show();
+//        bundle.putString(AppConstant.SEARCH_TEXT, s);
+//        gotoSearchResultFragment(bundle);
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onQueryTextChange(String s) {
+//        return false;
+//    }
 
 
 //    @Override

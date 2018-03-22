@@ -177,9 +177,9 @@ public class ThirdAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                                         shareIntent.putExtra(Intent.EXTRA_TEXT, "http://codepath.com");
                                         context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
                                         break;
-                                    case R.id.save:
-                                        //handle menu2 click
-                                        break;
+//                                    case R.id.save:
+//                                        //handle menu2 click
+//                                        break;
                                 }
                                 return false;
                             }

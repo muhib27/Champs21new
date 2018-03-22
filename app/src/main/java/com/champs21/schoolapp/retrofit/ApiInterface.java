@@ -73,6 +73,9 @@ public interface ApiInterface {
     Observable<Response<List<CategoryModel>>> getTopics(@Query("categories") int post, @Query("per_page") int per_page, @Query("offset") int offest);
     @GET("posts?_embed")
     Observable<Response<List<CategoryModel>>> getLatest(@Query("per_page") int per_page, @Query("offset") int offest);
+
+    @GET("posts?_embed")
+    Observable<Response<List<CategoryModel>>> getSearachTopics(@Query("search") String search, @Query("per_page") int per_page, @Query("offset") int offest);
 }
 
 

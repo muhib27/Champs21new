@@ -29,6 +29,7 @@
             tools:text="The server took too long to respond."/>
 
         <Button
+            android:background="@color/colorPrimaryRed"
             android:id="@+id/error_btn_retry"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
@@ -36,7 +37,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="@dimen/activity_margin_content"
             android:text="@string/btn_retry"
-            android:textColor="@color/colorAccent"/>
+            android:textColor="@color/white"/>
 
     </LinearLayout>
 

@@ -15,6 +15,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -94,8 +96,9 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_main_another, container, false);
+        View view = inflater.inflate(R.layout.video_layout, container, false);
 
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             MainActivity.toggle.setDrawerIndicatorEnabled(false);
@@ -426,6 +429,19 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
     public void retryPageLoad() {
 //        loadNextPage();
         callNewsApiNext(SELECTED);
+    }
+
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        searchItem.setVisible(false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
     }
 
 

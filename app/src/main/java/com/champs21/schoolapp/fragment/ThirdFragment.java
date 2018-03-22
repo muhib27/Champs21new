@@ -57,7 +57,7 @@ import retrofit2.Response;
  */
 public class ThirdFragment extends Fragment implements PaginationAdapterCallback {
 
-    ThirdAdapter adapter;
+    PaginationSingleAdapter adapter;
     LinearLayoutManager linearLayoutManager;
 
     RecyclerView rv;
@@ -117,7 +117,7 @@ public class ThirdFragment extends Fragment implements PaginationAdapterCallback
         btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
         txtError = (TextView) view.findViewById(R.id.error_txt_cause);
 
-        adapter = new ThirdAdapter(getContext(), this);
+        adapter = new PaginationSingleAdapter(getContext(), this);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);

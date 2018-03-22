@@ -23,7 +23,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        int SPLASH_TIME_OUT = 2500;
+        int SPLASH_TIME_OUT = 1500;
         new Handler().postDelayed(new Runnable() {
 
 

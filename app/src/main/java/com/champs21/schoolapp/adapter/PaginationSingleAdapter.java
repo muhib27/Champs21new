@@ -68,6 +68,10 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.mCallback = mCallback;
         movieResults = new ArrayList<>();
     }
+    public PaginationSingleAdapter(Context context) {
+        this.context = context;
+        movieResults = new ArrayList<>();
+    }
 
     public List<CategoryModel> getMovies() {
         return movieResults;
@@ -166,21 +170,16 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                             public boolean onMenuItemClick(MenuItem item) {
                                 switch (item.getItemId()) {
                                     case R.id.share:
-//                                        //handle menu1 click
-//                                        Intent sendIntent = new Intent();
-//                                        sendIntent.setAction(Intent.ACTION_SEND);
-////                                        sendIntent.putExtra(Intent.EXTRA_TEXT,editText.getText().toString());
-//                                        sendIntent.setType("text/plain");
-//                                        Intent.createChooser(sendIntent,"Share via");
-//                                        context.startActivity(sendIntent);
                                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
                                         shareIntent.setType("text/plain");
-                                        shareIntent.putExtra(Intent.EXTRA_TEXT, "http://codepath.com");
+                                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, movieResults.get(position).getTitle().getRendered());
+                                        shareIntent.putExtra(Intent.EXTRA_TITLE, movieResults.get(position).getTitle().getRendered());
+                                        shareIntent.putExtra(Intent.EXTRA_TEXT, movieResults.get(position).getLink());
                                         context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
                                         break;
-                                    case R.id.save:
-                                        //handle menu2 click
-                                        break;
+//                                    case R.id.save:
+//                                        //handle menu2 click
+//                                        break;
                                 }
                                 return false;
                             }

@@ -57,7 +57,7 @@ import retrofit2.Response;
  */
 public class SecondFragment extends Fragment implements PaginationAdapterCallback {
 
-    SecondAdapter adapter;
+    PaginationSingleAdapter adapter;
     LinearLayoutManager linearLayoutManager;
 
     RecyclerView rv;
@@ -121,7 +121,7 @@ public class SecondFragment extends Fragment implements PaginationAdapterCallbac
         btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
         txtError = (TextView) view.findViewById(R.id.error_txt_cause);
 
-        adapter = new SecondAdapter(getContext(), this);
+        adapter = new PaginationSingleAdapter(getContext(), this);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);
@@ -299,7 +299,7 @@ public class SecondFragment extends Fragment implements PaginationAdapterCallbac
     }
 
     private void callNewsApiNext( int selected) {
-        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, 0)
+        RetrofitApiClient.getApiInterface().getTopics(selected, currentPage, currentOffst)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Response<List<CategoryModel>>>() {

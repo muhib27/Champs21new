@@ -55,7 +55,7 @@ import retrofit2.Response;
  */
 public class FourthFragment extends Fragment implements PaginationAdapterCallback {
 
-    FourthAdapter adapter;
+    PaginationSingleAdapter adapter;
     LinearLayoutManager linearLayoutManager;
 
     RecyclerView rv;
@@ -106,7 +106,7 @@ public class FourthFragment extends Fragment implements PaginationAdapterCallbac
 //        listTopic = new ArrayList<>();
         //MainActivity.drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
-        adapter = new FourthAdapter(getContext(), this);
+        adapter = new PaginationSingleAdapter(getContext(), this);
 
         linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         rv.setLayoutManager(linearLayoutManager);

@@ -65,9 +65,9 @@ public class SingleAdapter extends RecyclerView.Adapter<SingleAdapter.MyViewHold
                             case R.id.share:
                                 //handle menu1 click
                                 break;
-                            case R.id.save:
-                                //handle menu2 click
-                                break;
+//                            case R.id.save:
+//                                //handle menu2 click
+//                                break;
                         }
                         return false;
                     }

@@ -74,6 +74,7 @@
     <string name="tv_show">টিভি শো</string>
     <string name="music">মিউজিক</string>
     <string name="cinema">সিনেমা</string>
+    <string name="more_news">র আরও খবর</string>
 
     <!--<string name="fitness_health"><![CDATA[Fitness & Health]]></string>-->
     <!--<string name="food_nutration"><![CDATA[Food & Nutration]]></string>-->
@@ -84,8 +85,8 @@
     <!--<string name="terms_policy"><![CDATA[Terms & Policy]]></string>-->
 
     <string name="my_api_key">ec01f8c2eb6ac402f2ca026dc2d9b8fd</string>
-    <string name="error_msg">Sorry! Couldn\'t fetch movies.</string>
-    <string name="btn_retry">Retry</string>
+    <string name="error_msg">ইন্টারনেট কানেকশন প্রয়োজন </string>
+    <string name="btn_retry">আবার চেষ্টা করুন</string>
     <string name="error_msg_no_internet">Not connected to internet</string>
     <string name="error_msg_timeout">The server took too long to respond</string>
     <string name="error_msg_unknown">An unexpected error occurred</string>

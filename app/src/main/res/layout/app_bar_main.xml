@@ -16,6 +16,7 @@
             android:id="@+id/toolbar"
             android:layout_gravity="left"
             android:gravity="left"
+            app:titleTextColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"

@@ -77,7 +77,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
     private boolean isLoadingAdded = false;
     private boolean retryPageLoad = false;
 
-//    private PaginationAdapterCallback mCallback;
+    private PaginationAdapterCallback mCallback;
 
     private String errorMsg;
 
@@ -85,6 +85,16 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
         this.context = context;
 //        this.mCallback = mCallback;
         this.movieResults = movieResults;
+    }
+    public PaginationInitialAdapter(Context context, PaginationAdapterCallback mCallback) {
+        this.context = context;
+        this.mCallback = mCallback;
+        movieResults = new ArrayList<>();
+    }
+    public PaginationInitialAdapter(Context context) {
+        this.context = context;
+//        this.mCallback = mCallback;
+        movieResults = new ArrayList<>();
     }
 
     public List<CategoryModel> getMovies() {
@@ -106,7 +116,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                 viewHolder = new MovieVH(viewItem);
                 break;
 //            case LOADING:
-//                View viewLoading = inflater.inflate(R.layout.item_progress, parent, false);
+//                View viewLoading = inflater.inflate(R.layout.item_progress_single, parent, false);
 //                viewHolder = new LoadingVH(viewLoading);
 //                break;
             case HERO:
@@ -223,9 +233,9 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
                                         shareIntent.putExtra(Intent.EXTRA_TEXT, movieResults.get(position).getLink());
                                         context.startActivity(Intent.createChooser(shareIntent, "Share link using"));
                                         break;
-                                    case R.id.save:
-                                        //handle menu2 click
-                                        break;
+//                                    case R.id.save:
+//                                        //handle menu2 click
+//                                        break;
                                 }
                                 return false;
                             }
@@ -258,7 +268,7 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 
 //            case LOADING:
 //                LoadingVH loadingVH = (LoadingVH) holder;
-//
+
 //                if (retryPageLoad) {
 //                    loadingVH.mErrorLayout.setVisibility(View.VISIBLE);
 //                    loadingVH.mProgressBar.setVisibility(View.GONE);
@@ -275,6 +285,13 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 //                break;
             case ADD:
                 final HeroAdd addHolder = (HeroAdd) holder;
+                if(movieResults.size()==24 && position==23)
+                {
+                    addHolder.mProgressBar.setVisibility(View.VISIBLE);
+                }
+                else {
+                    addHolder.mProgressBar.setVisibility(View.GONE);
+                }
                 if(position/6 <= 8) {
                     addHolder.title.setText(titleArray[position / 6]);
                     addHolder.title.setVisibility(View.VISIBLE);
@@ -303,7 +320,11 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public int getItemViewType(int position) {
-        if (position%6 == 0 ) {
+//        if(movieResults.size() == 24 && position==23){
+//            return LOADING;
+//        }
+//        else
+            if (position%6 == 0 ) {
             return HERO;
         }
         else if((position%6) == 5)
@@ -414,12 +435,12 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
      * @param show
      * @param errorMsg to display if page load fails
      */
-//    public void showRetry(boolean show, @Nullable String errorMsg) {
-//        retryPageLoad = show;
-//        notifyItemChanged(movieResults.size() - 1);
-//
-//        if (errorMsg != null) this.errorMsg = errorMsg;
-//    }
+    public void showRetry(boolean show, @Nullable String errorMsg) {
+        retryPageLoad = show;
+        notifyItemChanged(movieResults.size() - 1);
+
+        if (errorMsg != null) this.errorMsg = errorMsg;
+    }
 
 
    /*
@@ -475,10 +496,12 @@ public class PaginationInitialAdapter extends RecyclerView.Adapter<RecyclerView.
 
     protected class HeroAdd extends RecyclerView.ViewHolder {
         private TextView title;
+        private ProgressBar mProgressBar;
 
         public HeroAdd(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
+            mProgressBar = (ProgressBar) itemView.findViewById(R.id.loadmore_progress);
 
         }
     }
