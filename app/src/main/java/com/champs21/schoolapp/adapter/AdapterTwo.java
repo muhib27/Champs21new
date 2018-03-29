@@ -37,6 +37,11 @@ import com.champs21.schoolapp.model.CategoryModel;
 import com.champs21.schoolapp.model.Result;
 import com.champs21.schoolapp.utils.AppConstant;
 import com.champs21.schoolapp.utils.PaginationAdapterCallback;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -68,6 +73,8 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private PaginationAdapterCallback mCallback;
 
     private String errorMsg;
+
+
 
     public AdapterTwo(Context context, PaginationAdapterCallback mCallback) {
         this.context = context;
@@ -115,7 +122,7 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
         CategoryModel result = movieResults.get(position); // Movie
         final Bundle bundle = new Bundle();
         switch (getItemViewType(position)) {
@@ -264,6 +271,34 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     addHolder.title.setVisibility(View.VISIBLE);
                 } else
                     addHolder.title.setVisibility(View.GONE);
+                addHolder.mAdView.setAdListener(new AdListener() {
+                    @Override
+                    public void onAdClosed() {
+                        super.onAdClosed();
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(int i) {
+                        super.onAdFailedToLoad(i);
+                        ((HeroAdd) holder).mAdView.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onAdLeftApplication() {
+                        super.onAdLeftApplication();
+                    }
+
+                    @Override
+                    public void onAdOpened() {
+                        super.onAdOpened();
+                    }
+
+                    @Override
+                    public void onAdLoaded() {
+                        super.onAdLoaded();
+                        ((HeroAdd) holder).mAdView.setVisibility(View.VISIBLE);
+                    }
+                });
                 break;
         }
     }
@@ -507,11 +542,18 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     protected class HeroAdd extends RecyclerView.ViewHolder {
         private TextView title;
+        private AdView mAdView;
 
         public HeroAdd(View itemView) {
             super(itemView);
+            //MobileAds.initialize(context, context.getString(R.string.add_id));
+            mAdView = (AdView)itemView.findViewById(R.id.adView);
+            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView.loadAd(adRequest);
 
             title = (TextView) itemView.findViewById(R.id.title);
+
+
 
         }
     }

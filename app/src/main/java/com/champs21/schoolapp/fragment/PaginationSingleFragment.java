@@ -76,7 +76,7 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
     Button btnRetry;
     TextView txtError;
 
-    private static final int PAGE_START = 15;
+    private static final int PAGE_START = 10;
     private static final int PAGE_START_OFFSET = 0;
 
     private boolean isLoading = false;
@@ -130,7 +130,7 @@ public class PaginationSingleFragment extends Fragment implements PaginationAdap
             protected void loadMoreItems() {
                 isLoading = true;
 //                currentPage = 15;
-                currentOffst += 15;
+                currentOffst += 10;
 
                 //loadNextPage();
                 callNewsApiNext(SELECTED);

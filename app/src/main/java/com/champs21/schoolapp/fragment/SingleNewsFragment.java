@@ -236,16 +236,19 @@ public class SingleNewsFragment extends Fragment{
             writerText.setText(childList.get(currentPosition).getEmbedded().getAuthor().get(0).get("name").getAsString() +" | " + parseDate(childList.get(currentPosition).getNewsDate()));
             loadImage(childList.get(currentPosition).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(imageView);
         }
-        if((currentPosition +1)< childList.size())
-        {
-            frameLayout.setVisibility(View.VISIBLE);
-            if(childList.get(currentPosition+1).getTitle().getRendered()!=null) {
-                nextTitle.setText(childList.get(currentPosition + 1).getTitle().getRendered());
-                loadThumbImage(childList.get(currentPosition + 1).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(nextImage);
+        try {
+
+            if ((currentPosition + 1) < childList.size()) {
+                frameLayout.setVisibility(View.VISIBLE);
+                if (childList.get(currentPosition + 1).getTitle().getRendered() != null) {
+                    nextTitle.setText(childList.get(currentPosition + 1).getTitle().getRendered());
+                    loadThumbImage(childList.get(currentPosition + 1).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(nextImage);
+                }
+            } else {
+                frameLayout.setVisibility(View.GONE);
             }
-        }
-        else {
-            frameLayout.setVisibility(View.GONE);
+        }catch (Exception e){
+
         }
         loadWebView(pageContent);
     }

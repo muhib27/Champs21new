@@ -68,6 +68,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
         this.mCallback = mCallback;
         movieResults = new ArrayList<>();
     }
+
     public PaginationSingleAdapter(Context context) {
         this.context = context;
         movieResults = new ArrayList<>();
@@ -106,6 +107,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
         return viewHolder;
     }
+    ArrayList<CategoryModel> childList;
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
@@ -113,30 +115,31 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
         final Bundle bundle = new Bundle();
         switch (getItemViewType(position)) {
             case HERO:
-            final HeroVH topItem = (HeroVH) holder;
-            topItem.cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, movieResults.size()));
-                    String str = new Gson().toJson(childList);
-                    bundle.putString("childList", str);
+                final HeroVH topItem = (HeroVH) holder;
+                topItem.cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, movieResults.size()));
+                        String str = new Gson().toJson(childList);
+                        bundle.putString("childList", str);
 
-                    //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
+                        //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
 
 //                    bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString());
 //                    bundle.putString(AppConstant.SELECTED_ITEM_TITLE, movieResults.get(position).getTitle().getRendered());
 //                    bundle.putString(AppConstant.SELECTED_ITEM_CONTENT, movieResults.get(position).getContent().getMainConten());
 //                    bundle.putString(AppConstant.SELECTED_ITEM_AUTHOR, movieResults.get(position).getEmbedded().getAuthor().get(0).get("name").getAsString());
-                    gotoSingleNewsFragment(bundle);
-                }
-            });
+                        gotoSingleNewsFragment(bundle);
+                    }
+                });
 
-            topItem.mMovieTitle.setText(result.getTitle().getRendered());
-            topItem.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
-            loadImage(result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(topItem.mPosterImg);
-            break;
+                topItem.mMovieTitle.setText(result.getTitle().getRendered());
+                topItem.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
+                loadImage(result.getEmbedded().getFeatureMedia().get(0).get("source_url").getAsString()).into(topItem.mPosterImg);
+                break;
             case ITEM:
                 final MovieVH itemHolder = (MovieVH) holder;
+
 
                 itemHolder.mMovieTitle.setText(result.getTitle().getRendered());
 //                movieVH.mYear.setText(formatYearLabel(result));
@@ -145,8 +148,10 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
-                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, (movieResults.size()-1)));
+                        if (isLoadingAdded)
+                            childList = new ArrayList<CategoryModel>(movieResults.subList(position, (movieResults.size()-1)));
+                        else
+                            childList = new ArrayList<CategoryModel>(movieResults.subList(position, (movieResults.size())));
                         String str = new Gson().toJson(childList);
                         bundle.putString("childList", str);
                         //bundle.putString(AppConstant.SELECTED_ITEM_LINK, movieResults.get(position).getEmbedded().getFeatureMedia().get(0).get("media_details").getAsJsonObject().get("sizes").getAsJsonObject().get("medium").getAsJsonObject().get("source_url").getAsString());
@@ -161,7 +166,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                     @Override
                     public void onClick(View view) {
                         //creating a popup menu
-                        PopupMenu popup = new PopupMenu(context,  itemHolder.menuOption);
+                        PopupMenu popup = new PopupMenu(context, itemHolder.menuOption);
                         //inflating menu from xml resource
                         popup.inflate(R.menu.option_menu);
                         //adding click listener
@@ -208,8 +213,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 }
                             })
                             .into(itemHolder.mPosterImg);
-                }catch (Exception e)
-                {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
@@ -240,7 +244,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     private void gotoSingleNewsFragment(Bundle bundle) {
         SingleNewsFragment singleNewsFragment = new SingleNewsFragment();
-        FragmentManager fragmentManager = ((FragmentActivity)context).getSupportFragmentManager();
+        FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         singleNewsFragment.setArguments(bundle);
 //        transaction.replace(R.id.main_acitivity_container, singleNewsFragment, "singleNewsFragment").addToBackStack(null);
@@ -326,7 +330,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     }
 
-    public void clearList(){
+    public void clearList() {
         movieResults.clear();
     }
 
@@ -408,7 +412,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
             mMovieDesc = (TextView) itemView.findViewById(R.id.movie_desc);
 //            mYear = (TextView) itemView.findViewById(R.id.movie_year);
             mPosterImg = (ImageView) itemView.findViewById(R.id.movie_poster);
-            cardView = (CardView)itemView.findViewById(R.id.cardView);
+            cardView = (CardView) itemView.findViewById(R.id.cardView);
         }
     }
 
@@ -433,7 +437,7 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
             mPosterImg = (ImageView) itemView.findViewById(R.id.movie_poster);
             mProgress = (ProgressBar) itemView.findViewById(R.id.movie_progress);
             menuOption = (TextView) itemView.findViewById(R.id.menuOptions);
-            itemLayout = (FrameLayout)itemView.findViewById(R.id.itemLayout);
+            itemLayout = (FrameLayout) itemView.findViewById(R.id.itemLayout);
         }
     }
 
