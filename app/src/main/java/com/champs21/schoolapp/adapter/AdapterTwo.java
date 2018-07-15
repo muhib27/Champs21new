@@ -45,6 +45,7 @@ import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -58,6 +59,7 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int LOADING = 1;
     private static final int HERO = 2;
     private static final int ADD = 5;
+    private static final int FOOTER = 58;
     private String[] titleStringArray = {"খবর", "বিজ্ঞানপ্রযুক্তি", "অ্যাপস ও গেইমস", "চ্যাম্পিয়ন", "জীবনযাত্রা", "রিসোর্স সেন্টার", "খেলাধুলা", "বিনোদন", "ভিডিও"};
     private int[] titleArray = {R.string.news, R.string.scitech, R.string.apps_games, R.string.champion, R.string.life_style, R.string.resource_center, R.string.sports, R.string.entertainment, R.string.video};
     private int[] linkArray = {AppConstant.NEWS, AppConstant.SCITECH, AppConstant.APPS_GAMES, AppConstant.CHAMPION, AppConstant.LIFE_STYLE, AppConstant.RESOURCE_CENTER, AppConstant.SPORTS, AppConstant.ENTERTAINMENT, AppConstant.VIDEO};
@@ -73,7 +75,7 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private PaginationAdapterCallback mCallback;
 
     private String errorMsg;
-
+    private String footerString = "";
 
 
     public AdapterTwo(Context context, PaginationAdapterCallback mCallback) {
@@ -131,14 +133,19 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 topItem.cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int next=0;
-                        if(position>4)
+                        int next = 0;
+                        if (position > 4)
                             next = 5;
                         else
                             next = 1;
-                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, position+next));
+                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, position + next));
                         String str = new Gson().toJson(childList);
                         bundle.putString("childList", str);
+                        bundle.putInt("id", Integer.parseInt(movieResults.get(position).getId()));
+//                        if (position < 5)
+//                            bundle.putInt(AppConstant.SELECTED_ITEM, 0);
+//                        else
+//                            bundle.putInt(AppConstant.SELECTED_ITEM, linkArray[(position / 6) - 1]);
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -149,6 +156,13 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 break;
             case ITEM:
                 final MovieVH itemHolder = (MovieVH) holder;
+                if (position == 58) {
+                    String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+                    footerString = "© চ্যাম্পস টোয়েন্টিওয়ান ডটকম ২০১০-" + getdateInBangla(year);
+                    itemHolder.footerLayout.setVisibility(View.VISIBLE);
+                    itemHolder.footerText.setText(footerString);
+                } else
+                    itemHolder.footerLayout.setVisibility(View.GONE);
 
                 itemHolder.mMovieTitle.setText(result.getTitle().getRendered());
 //                movieVH.mYear.setText(formatYearLabel(result));
@@ -156,22 +170,23 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 itemHolder.mPosterImg.setImageResource(R.drawable.sample);
                 if (position > 6 && position % 6 == 4) {
                     itemHolder.moreNewsLayout.setVisibility(View.VISIBLE);
-                    if (position == 58)
+                    if (position == 58) {
                         itemHolder.moreText.setText("আরও ভিডিও >>");
-                    else
+
+                    } else {
                         itemHolder.moreText.setText("আরও খবর >>");
+                    }
                 } else
                     itemHolder.moreNewsLayout.setVisibility(View.GONE);
                 itemHolder.moreNewsLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         Bundle bundle = new Bundle();
-                        bundle.putInt(AppConstant.SELECTED_ITEM, linkArray[(position/6)-1]);
-                        bundle.putString(AppConstant.TITLE, titleStringArray[(position/6)-1]);
-                        if(position==58){
+                        bundle.putInt(AppConstant.SELECTED_ITEM, linkArray[(position / 6) - 1]);
+                        bundle.putString(AppConstant.TITLE, titleStringArray[(position / 6) - 1]);
+                        if (position == 58) {
                             gotoPaginationSingleFragment(bundle);
-                        }
-                        else {
+                        } else {
                             gotoPagerFragment(bundle);
                         }
                     }
@@ -179,14 +194,19 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int next=0;
-                        if(position>4)
-                            next = 5-(position%6);
+                        int next = 0;
+                        if (position > 4)
+                            next = 5 - (position % 6);
                         else
                             next = 1;
-                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, position+next));
+                        ArrayList<CategoryModel> childList = new ArrayList<CategoryModel>(movieResults.subList(position, position + next));
                         String str = new Gson().toJson(childList);
                         bundle.putString("childList", str);
+                        bundle.putInt("id", Integer.parseInt(movieResults.get(position).getId()));
+//                        if (position < 5)
+//                            bundle.putInt(AppConstant.SELECTED_ITEM, 0);
+//                        else
+//                            bundle.putInt(AppConstant.SELECTED_ITEM, linkArray[(position / 6) - 1]);
                         gotoSingleNewsFragment(bundle);
                     }
                 });
@@ -275,6 +295,7 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onAdClosed() {
                         super.onAdClosed();
+                        ((HeroAdd) holder).mAdView.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -321,6 +342,7 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         transaction.add(R.id.main_acitivity_container, paginationSingleFragment, "paginationSingleFragment").addToBackStack(null);
         transaction.commit();
     }
+
     private void gotoPagerFragment(Bundle bundle) {
         PagerFragment pagerFragment = new PagerFragment();
         FragmentManager fragmentManager = ((FragmentActivity) context).getSupportFragmentManager();
@@ -524,6 +546,8 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         private FrameLayout itemLayout;
         private LinearLayout moreNewsLayout;
         private TextView moreText;
+        private LinearLayout footerLayout;
+        private TextView footerText;
 
         public MovieVH(View itemView) {
             super(itemView);
@@ -536,7 +560,9 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             menuOption = (TextView) itemView.findViewById(R.id.menuOptions);
             itemLayout = (FrameLayout) itemView.findViewById(R.id.itemLayout);
             moreNewsLayout = (LinearLayout) itemView.findViewById(R.id.moreNews);
+            footerLayout = (LinearLayout) itemView.findViewById(R.id.footerLayout);
             moreText = (TextView) itemView.findViewById(R.id.moreText);
+            footerText = (TextView) itemView.findViewById(R.id.footerText);
         }
     }
 
@@ -547,12 +573,20 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         public HeroAdd(View itemView) {
             super(itemView);
             //MobileAds.initialize(context, context.getString(R.string.add_id));
-            mAdView = (AdView)itemView.findViewById(R.id.adView);
-            AdRequest adRequest = new AdRequest.Builder().build();
+            mAdView = (AdView) itemView.findViewById(R.id.adView);
+//            AdRequest adRequest =new AdRequest.Builder()
+//                    .build();
+            //walton
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice("C6C9D010BB2351DEADFB790B3FEA87F3")
+                    .build();
+            //j5
+//            AdRequest adRequest = new AdRequest.Builder()
+//                    .addTestDevice("5AD66C85F40AB488E99FABA56A5C242D")
+//                    .build();
             mAdView.loadAd(adRequest);
 
             title = (TextView) itemView.findViewById(R.id.title);
-
 
 
         }
@@ -589,6 +623,26 @@ public class AdapterTwo extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     break;
             }
         }
+    }
+
+    public String getdateInBangla(String string) {
+        Character bangla_number[] = {'০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'};
+        Character eng_number[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
+        String values = "";
+        char[] character = string.toCharArray();
+        for (int i = 0; i < character.length; i++) {
+            Character c = ' ';
+            for (int j = 0; j < eng_number.length; j++) {
+                if (character[i] == eng_number[j]) {
+                    c = bangla_number[j];
+                    break;
+                } else {
+                    c = character[i];
+                }
+            }
+            values = values + c;
+        }
+        return values;
     }
 
 }

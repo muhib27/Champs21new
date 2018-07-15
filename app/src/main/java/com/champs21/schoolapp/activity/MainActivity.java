@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
+import com.champs21.schoolapp.MyGooglePlay;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.fragment.AppRelatedFragment;
 import com.champs21.schoolapp.fragment.EntertainmentPagerFragment;
@@ -46,6 +47,7 @@ import com.champs21.schoolapp.utils.AppConstant;
 
 import com.champs21.schoolapp.utils.DrawerLocker;
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.MobileAds;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -79,12 +81,18 @@ public class MainActivity extends AppCompatActivity
     private int[] menuArray = {-1, AppConstant.NEWS, AppConstant.SCITECH, AppConstant.APPS_GAMES, AppConstant.CHAMPION, AppConstant.LIFE_STYLE, AppConstant.RESOURCE_CENTER, AppConstant.SPORTS, AppConstant.ENTERTAINMENT, AppConstant.VIDEO};
     private static int si = 0;
     public static ArrayList<CategoryModel> results = new ArrayList<>();
+    MyGooglePlay myGP;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        if (!MyGooglePlay.isGooglePlay(getApplicationContext())) {
+//            myGP = new MyGooglePlay(this);
+//            myGP.isGooglePlay();
+//        }
+        MobileAds.initialize(this, "ca-app-pub-8075088805013960~4205898898");
         showToolbar();
         showProgressDialog();
         si = 0;
@@ -913,7 +921,7 @@ public class MainActivity extends AppCompatActivity
 //
 //        }
         else if (id == R.id.about_us) {
-            bundle.putString("title", "About Us");
+            bundle.putString("title", "আমাদের সম্পর্কে");
             bundle.putString("description",
                     getResources().getString(R.string.about_use_text));
             gotoAppRelatedFragment(bundle);

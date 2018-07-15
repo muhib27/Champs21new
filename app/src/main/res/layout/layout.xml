@@ -22,8 +22,13 @@
         android:layout_height="wrap_content"
         ads:adSize="BANNER"
         android:visibility="gone"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        ads:adUnitId="ca-app-pub-8075088805013960/7259082427">
     </com.google.android.gms.ads.AdView>
+    <!--test-->
+    <!--ca-app-pub-3940256099942544/6300978111-->
+
+    <!--live-->
+    <!--ads:adUnitId="ca-app-pub-8075088805013960/7259082427"-->
     <TextView
         android:textColor="@color/white"
         android:textStyle="bold"

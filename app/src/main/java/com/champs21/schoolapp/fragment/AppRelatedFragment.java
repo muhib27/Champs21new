@@ -12,10 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.activity.MainActivity;
+
+import static android.text.Layout.JUSTIFICATION_MODE_INTER_WORD;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,7 @@ import com.champs21.schoolapp.activity.MainActivity;
 public class AppRelatedFragment extends Fragment{
 
     private TextView headerTextVew, descriptionTextView;
+    private WebView webView;
 
     public AppRelatedFragment() {
         // Required empty public constructor
@@ -45,14 +49,21 @@ public class AppRelatedFragment extends Fragment{
             ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         headerTextVew = (TextView)view.findViewById(R.id.tv_header_text);
-        descriptionTextView = (TextView) view.findViewById(R.id.tv_description_body);
+        //descriptionTextView = (TextView) view.findViewById(R.id.tv_description_body);
+        webView = (WebView)view.findViewById(R.id.webView);
+//        descriptionTextView.setJustificationMode(JUSTIFICATION_MODE_INTER_WORD);
         setContent();
     }
 
     private void setContent() {
         // TODO Auto-generated method stub
         headerTextVew.setText(getArguments().getString("title"));
-        descriptionTextView.setText(Html.fromHtml(getArguments().getString("description")));
+        String youtContentStr = String.valueOf(Html
+                .fromHtml("<![CDATA[<body style=\"text-align:justify;color:#222222; \">"
+                        + getArguments().getString("description")
+                        + "</body>]]>"));
+        webView.loadData(youtContentStr, "text/html", "UTF-8");
+        //descriptionTextView.setText(Html.fromHtml(getArguments().getString("description")));
     }
 
     @Override

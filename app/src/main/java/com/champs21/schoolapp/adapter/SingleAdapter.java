@@ -47,7 +47,7 @@ public class SingleAdapter extends RecyclerView.Adapter<SingleAdapter.MyViewHold
         TextView newsDesc = holder.newsDesc;
         final TextView menuOptions = holder.menuOptions;
 
-        newsTitle.setText(dataSet.get(position).getTitle().getRendered());
+        newsTitle.setText((android.text.Html.fromHtml(dataSet.get(position).getTitle().getRendered()).toString()));
         newsDesc.setText((android.text.Html.fromHtml(dataSet.get(position).getExcerptModel().getRendered()).toString()));
         //Toast.makeText(context, dataSet.get(position), Toast.LENGTH_SHORT).show();
         menuOptions.setOnClickListener(new View.OnClickListener() {

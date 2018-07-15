@@ -32,7 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 //                boolean isFirstTime = AppSharedPreference.getUsingFirstTime();
                 Intent intent;
 //                if (isFirstTime) {
-                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                intent = new Intent(SplashActivity.this, MainActivity.class);
 //                } else {
 //                    intent = new Intent(SplashActivity.this, MainActivity.class);
 //                }
@@ -64,5 +64,10 @@ public class SplashActivity extends AppCompatActivity {
         } catch (PackageManager.NameNotFoundException e) {
         } catch (NoSuchAlgorithmException e) {
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
     }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorPrimaryRed" />
+
+    <TextView
+        android:id="@+id/footerText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:maxLines="3"
+        android:paddingBottom="@dimen/size_10dp"
+        android:paddingTop="@dimen/size_5dp"
+        android:text="copy right"
+        android:textColor="@color/colorPrimaryRed"
+        android:textSize="13sp" />
+</LinearLayout>
+

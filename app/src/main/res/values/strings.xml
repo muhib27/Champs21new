@@ -19,7 +19,7 @@
     <string name="food_nutration"><![CDATA[Food & Nutration]]></string>
 
     <!--<string name="literature">Literature</string>-->
-    <string name="about_us">About Us</string>
+    <string name="about_us"><![CDATA[আমাদের সম্পর্কে]]></string>
     <string name="terms_policy"><![CDATA[Terms & Policy]]></string>
 
     <string name="all_news">সব</string>
@@ -93,24 +93,24 @@
     <string name="tap_to_reload">Tap to reload</string>
     <string name="add_id">ca-app-pub-3940256099942544/6300978111</string>
 
-    <string name="about_use_text">
-<![CDATA[<p>After its launching in October 2010, Champs21.com has been catering to both Bangla and English medium students, primarily offering a self-assessment test service to assess students’ own strengths and weaknesses in Mathematics and Science towards stronger academic foundation. It also enables students to brush up their ‘beyond-textbook’ learning in both Bangla and English languages. Another area of scholastic focus of this approach covers General Knowledge, IQ, and Current Affairs in its extra curriculum section. The inception of Champs21.com took place keeping in mind the following targets:</p>
-        <p>
-            <ul>
-                <li>•	Bringing about fun, excitement and enjoyment in learning;</li><br><br>
-                <li>•	opening up the world of internet as a \‘huge free knowledge bank\’ to the students;</li><br><br>
-                <li>•	bridging the resource-divide, that implies a village student gains access to the same quality of learning as a traditionally more fortunate urban student of a top-school</li><br><br>
-            </ul>
-        </p>
-        <p>
-            With realization to all the factor that are there in the system which demands an immediate action for a better educational method, Champs21.com is determined to provide the best standard education in every corner of the country.
-        </p>
-         <p>
-            <b>Current Version: 1.0.9</b>
-        </p>
+    <!--<string name="about_use_text">-->
+    <!--<![CDATA[<p>After its launching in October 2010, Champs21.com has been catering to both Bangla and English medium students, primarily offering a self-assessment test service to assess students’ own strengths and weaknesses in Mathematics and Science towards stronger academic foundation. It also enables students to brush up their ‘beyond-textbook’ learning in both Bangla and English languages. Another area of scholastic focus of this approach covers General Knowledge, IQ, and Current Affairs in its extra curriculum section. The inception of Champs21.com took place keeping in mind the following targets:</p>-->
+    <!--<p>-->
+    <!--<ul>-->
+    <!--<li>•	Bringing about fun, excitement and enjoyment in learning;</li><br><br>-->
+    <!--<li>•	opening up the world of internet as a \‘huge free knowledge bank\’ to the students;</li><br><br>-->
+    <!--<li>•	bridging the resource-divide, that implies a village student gains access to the same quality of learning as a traditionally more fortunate urban student of a top-school</li><br><br>-->
+    <!--</ul>-->
+    <!--</p>-->
+    <!--<p>-->
+    <!--With realization to all the factor that are there in the system which demands an immediate action for a better educational method, Champs21.com is determined to provide the best standard education in every corner of the country.-->
+    <!--</p>-->
+    <!--<p>-->
+    <!--<b>Current Version: 2.0.2</b>-->
+    <!--</p>-->
 
-    ]]>
-    </string>
+    <!--]]>-->
+    <!--</string>-->
     <string name="termsandpolicy_text">
 <![CDATA[
          <p>Team Creative and its subsidiaries (\'Champs21.com\', also referred to in First Person in the subsequent paragraphs) respect your (the Subscriber\'s) privacy. This Privacy Policy provides succinctly the manner in which your personal data are collected and used by Team Creative. You (the Subscriber) are advised to please read the Privacy Policy carefully. By accessing the services provided by Team Creative, you agree to the collection and use of your data by Team Creative in the manner provided in this Privacy Policy.</p>
@@ -134,6 +134,64 @@
 
     ]]>
     </string>
+
+    <string name="about_use_text">
+        <![CDATA[
+
+        <p>
+                আজকের তরুণরাই একুশ শতকের চ্যাম্পিয়ন। ২০১০ সালে যাত্রা শুরুর পর থেকেই
+                একুশ শতকের চ্যাম্পিয়নদের তৈরি করতে কাজ করছে চ্যাম্পস টোয়েন্টিওয়ান ডটকম।
+                দেশের তথ্যপ্রযুক্তি খাতের শীর্ষস্থানীয় সফটওয়্যার কোম্পানি টিম ক্রিয়েটিভের
+                অন্যতম উদ্যোগ চ্যাম্পস টোয়েন্টিওয়ান ডটকম।
+        </p>
+        <p>
+                প্রথমদিকে বাংলা ও ইংরেজি মাধ্যমের শিক্ষার্থীদের পাঠ্যসূচির নানা দুর্বলতা
+                কাটিয়ে উঠার জন্য সেলফ অ্যাসেসমেন্ট সুবিধাসহ নানা ফিচার যুক্ত করা হয়
+                পোর্টালটিতে, যা দেশব্যাপী বেশ সাড়া ফেলে। শুধু পাঠ্যবই নয়, আজকের শিক্ষার্থী বা
+                তরুণরা যাতে যোগ্য মানুষ হয়ে গড়ে উঠতে পারে তার জন্য বইয়ের বাইরের বিষয়গুলো
+                ক্যাটাগরিভিত্তিক যেমন ফুড ও নিউট্রিশন, ফিটনেস ও হেলথ, এন্টারটেইনমেন্ট,
+                গেইমস, পার্সোনালিটি, জেনারেল নলেজ, আইকিউ, কারেন্ট অ্যাফেয়ার্স, নিউজসহ
+                নানা বিষয় তুলে ধরা হয় পোর্টালটিতে। যেখানে শুধু শিক্ষার্থী নয়, তাদের অভিভাবক ও
+                শিক্ষকদেরও যুক্ত করা হয়, যাতে তারা সম্মিলিতভাবে আগামী দিনের চ্যাম্পিয়নদের
+                তৈরি করতে পারেন।
+        </p>
+        <p>
+                শুধু কনটেন্ট দিয়েই নয়, নানা প্রতিযোগিতার মাধ্যমে শিক্ষার্থীদের মানোন্নয়ন ও
+                মেধার স্বীকৃতি দিতে চ্যাম্পস টোয়েন্টিওয়ান ডটকমের উদ্যোগে আয়োজন করা হয়
+                বানান বিষয়ক জনপ্রিয় টেলিভিশন প্রতিযোগিতা ‘স্পেলিং বি’, বাংলাদেশ ফার্স্ট,
+                বিজ্ঞানভিত্তিক টেলিভিশন শো ‘সায়েন্স রক’ প্রোগ্রামের মতো জনপ্রিয় নানা অনুষ্ঠান।
+        </p>
+        <p>
+                একদিকে তরুণরা যেমন আগামীর বাংলাদেশ গড়বে, তেমনিভাবে বর্তমানের চ্যাম্পিয়নরা
+                আগামীর চ্যাম্পিয়ানদেরকে তাদের অভিজ্ঞতা দিয়ে অনুপ্রাণিত করবে। আর তাই
+                আগামীর চ্যাম্পিয়নদের কাছে বর্তমানের চ্যাম্পিয়ানদেরকে তুলে ধরতে কাজ শুরু করে
+                পোর্টালটি। সেই লক্ষ্য নিয়ে একটি অনলাইন ইনফরমেশন পোর্টাল হিসেবে বর্তমানে
+                পরিচালিত হচ্ছে চ্যাম্পস টোয়েন্টিওয়ান ডটকম। পোর্টালটির এই অগ্রযাত্রায়
+                আপনিও একজন সঙ্গী...
+        </p>
+        <p>
+             <strong>যোগাযোগ <br></strong>
+              চ্যাম্পস টোয়েন্টিওয়ান ডটকম<br>
+              বাড়ি ৫৪ (৫ম তলা), সড়ক ১০, ব্লক ই,<br>
+              বনানী, ঢাকা-১২১৪<br>
+              ফোন: +৮৮০-২-৯৮৯১৩৬৭-৮<br>
+              +৮৮০-৯৬১২২১২১২১-২<br>
+              মোবাইল: +৮৮০-১৭৪০-২১২১২১<br>
+              ইমেইল: info@champs21.com
+        </p>
+         ]]>
+    </string>
+
+    <!--<![CDATA[-->
+<!--<html>-->
+ <!--<head></head>-->
+ <!--<body style="text-align:justify;color:gray;background-color:black;">-->
+  <!--Lorem ipsum dolor sit amet, consectetur-->
+  <!--adipiscing elit. Nunc pellentesque, urna-->
+  <!--nec hendrerit pellentesque, risus massa-->
+ <!--</body>-->
+<!--</html>-->
+<!--]]>-->
 
 
 </resources>

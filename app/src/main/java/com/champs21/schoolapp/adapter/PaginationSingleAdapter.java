@@ -141,8 +141,10 @@ public class PaginationSingleAdapter extends RecyclerView.Adapter<RecyclerView.V
                 final MovieVH itemHolder = (MovieVH) holder;
 
 
+                if(result.getTitle().getRendered()!=null)
                 itemHolder.mMovieTitle.setText(result.getTitle().getRendered());
 //                movieVH.mYear.setText(formatYearLabel(result));
+                if(result.getExcerptModel().getRendered()!=null)
                 itemHolder.mMovieDesc.setText(android.text.Html.fromHtml(result.getExcerptModel().getRendered()).toString());
                 itemHolder.mPosterImg.setImageResource(R.drawable.sample);
                 itemHolder.itemLayout.setOnClickListener(new View.OnClickListener() {

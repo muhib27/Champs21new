@@ -1,14 +1,24 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:background="@color/white"
-    android:orientation="vertical"
-    android:padding="@dimen/size_5dp"
+    android:id="@+id/swipe_container"
     tools:context="com.champs21.schoolapp.fragment.SingleNewsFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+        <!--android:id="@+id/swipe_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="@dimen/size_5dp"
+        android:id="@+id/scrollView">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -28,7 +38,7 @@
                 android:paddingLeft="@dimen/size_10dp"
                 android:text="Head Line"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_18sp"
+                android:textSize="@dimen/text_size_20sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -43,8 +53,24 @@
                 android:textSize="@dimen/text_size_14sp"
                 android:textStyle="normal" />
         </LinearLayout>
+        <com.google.android.gms.ads.AdView
+            android:layout_gravity="center"
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/singleNewsad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            ads:adSize="BANNER"
+            android:visibility="gone"
+            ads:adUnitId="ca-app-pub-8075088805013960/7259082427">
+        </com.google.android.gms.ads.AdView>
+        <!--test-->
+        <!--ca-app-pub-3940256099942544/6300978111-->
+
+        <!--live-->
+        <!--ads:adUnitId="ca-app-pub-8075088805013960/7259082427"-->
 
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/poster"
             android:layout_width="match_parent"
             android:layout_height="@dimen/poster_hero_height"
@@ -68,7 +94,7 @@
             android:background="@color/colorPrimaryRed" />
 
         <TextView
-            android:layout_marginBottom="@dimen/size_30dp"
+            android:layout_marginBottom="@dimen/size_20dp"
             android:gravity="center"
             android:text="copy right"
             android:id="@+id/footerText"
@@ -79,5 +105,6 @@
             android:textColor="@color/black"
             android:textSize="12sp" />
     </LinearLayout>
+    </ScrollView>
 
-</ScrollView>
+</android.support.v4.widget.SwipeRefreshLayout>

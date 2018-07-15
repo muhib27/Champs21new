@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "649538025850",
+    "firebase_url": "https://champs21new.firebaseio.com",
+    "project_id": "champs21new",
+    "storage_bucket": "champs21new.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:649538025850:android:9724cb72ba15a667",
+        "android_client_info": {
+          "package_name": "com.champs21.schoolapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "649538025850-juj7vii88u3ml0p8hsp1f5vasr5u4t8t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.champs21.schoolapp",
+            "certificate_hash": "d759137e452f4efe69aac98343de6eacc7358345"
+          }
+        },
+        {
+          "client_id": "649538025850-te94c4frgpko2pcbe18h55rl4ohluic1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNDcBK3-XFXnOAJO2gAeuALLB6EjAdukk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "649538025850-te94c4frgpko2pcbe18h55rl4ohluic1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

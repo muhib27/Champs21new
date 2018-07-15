@@ -29,9 +29,10 @@
                 android:theme="@style/CircularProgress" />
 
             <ImageView
+                android:layout_gravity="center"
                 android:id="@+id/movie_poster"
-                android:layout_width="@dimen/poster_thumb_width"
-                android:layout_height="@dimen/poster_thumb_height"
+                android:layout_width="@dimen/poster_thumb_height"
+                android:layout_height="@dimen/poster_thumb_width"
                 android:src="@drawable/sample" />
 
         </android.support.v7.widget.CardView>
@@ -40,15 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:layout_marginTop="@dimen/activity_margin_half"
             android:background="@android:color/transparent"
             android:orientation="vertical"
             android:paddingBottom="@dimen/activity_margin"
             android:paddingEnd="@dimen/activity_margin"
-            android:paddingLeft="@dimen/poster_thumb_width"
+            android:paddingLeft="@dimen/poster_thumb_height"
             android:paddingRight="@dimen/activity_margin"
-            android:paddingStart="@dimen/poster_thumb_width"
-            android:paddingTop="@dimen/activity_margin_half">
+            android:paddingStart="@dimen/poster_thumb_height">
 
             <!--<TextView-->
             <!--android:id="@+id/movie_year"-->
@@ -74,7 +73,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_margin_content"
                     android:layout_marginStart="@dimen/activity_margin_content"
-                    android:layout_marginTop="@dimen/activity_margin_quarter"
                     android:layout_weight=".9"
                     android:maxLines="2"
                     android:textColor="@color/black"
@@ -129,5 +127,30 @@
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_16sp" />
 
+    </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/footerLayout"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/colorPrimaryRed" />
+
+        <TextView
+            android:paddingTop="@dimen/size_5dp"
+            android:paddingBottom="@dimen/size_5dp"
+            android:id="@+id/footerText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:maxLines="3"
+            android:text="copy right"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
     </LinearLayout>
 </LinearLayout>

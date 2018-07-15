@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.champs21.schoolapp.MyGooglePlay;
 import com.champs21.schoolapp.R;
 import com.champs21.schoolapp.activity.MainActivity;
 import com.champs21.schoolapp.adapter.AdapterTwo;
@@ -38,6 +39,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -58,7 +60,7 @@ import retrofit2.Response;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener{
+public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallback, SwipeRefreshLayout.OnRefreshListener {
 
     AdapterTwo adapter;
     LinearLayoutManager linearLayoutManager;
@@ -81,6 +83,10 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
     private int SELECTED;
     ArrayList<CategoryModel> results = new ArrayList<>();
     SwipeRefreshLayout mSwipeRefreshLayout;
+    private static boolean isRunningNextApi = false;
+    private TextView footerText;
+    String footerString = "";
+
 
 
     public HomeFragmentTwo() {
@@ -114,12 +120,16 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
                 //loadRecyclerViewData();
             }
         });
+        String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
+        footerString = "© চ্যাম্পস টোয়েন্টিওয়ান ডটকম ২০১০-" + getdateInBangla(year);
 
         rv = (RecyclerView) view.findViewById(R.id.main_recycler);
 //        progressBar = (ProgressBar) view.findViewById(R.id.main_progress);
         errorLayout = (LinearLayout) view.findViewById(R.id.error_layout);
         btnRetry = (Button) view.findViewById(R.id.error_btn_retry);
         txtError = (TextView) view.findViewById(R.id.error_txt_cause);
+//        footerText = (TextView)view.findViewById(R.id.footerText);
+//        footerText.setText(footerString);
 
         adapter = new AdapterTwo(getContext(), this);
 
@@ -264,7 +274,7 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
                         if (progressDialog != null && progressDialog.isShowing())
                             hideProgress();
                         showErrorView(e);
-                        adapter.showRetry(true, fetchErrorMessage(e));
+                        //adapter.showRetry(true, fetchErrorMessage(e));
 
                     }
 
@@ -329,6 +339,7 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
     }
 
     private void callNewsApiNext() {
+        isRunningNextApi = true;
         hideErrorView();
         final ArrayList<CategoryModel> newresults = new ArrayList<>();
         RetrofitApiClient.getApiInterface().getTopics(AppConstant.CHAMPION, 5, 0)
@@ -427,12 +438,17 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
 //                            errorLayout.setVisibility(View.GONE);
                         adapter.addAllData(results);
                         isLastPage = true;
+                        isRunningNextApi = false;
+//                        footerText.setText(footerString);
+//                        footerText.setVisibility(View.VISIBLE);
                         //mSwipeRefreshLayout.setRefreshing(false);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         e.printStackTrace();
+                        //showErrorView(e);
+                        adapter.showRetry(true, fetchErrorMessage(e));
 
                     }
 
@@ -514,8 +530,11 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
     }
 
 
-
     public void callChainApi() {
+        if (isRunningNextApi) {
+            mSwipeRefreshLayout.setRefreshing(false);
+            return;
+        }
         final ArrayList<CategoryModel> newresults = new ArrayList<>();
         RetrofitApiClient.getApiInterface().getLatest(5, 0)
                 .flatMap(new Function<Response<List<CategoryModel>>, ObservableSource<Response<List<CategoryModel>>>>() {
@@ -624,7 +643,7 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
                             singleList.size();
                             newresults.addAll(singleList);
                             newresults.add(singleList.get(4));
-                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.VIDEO, 5, 0);
+                            return RetrofitApiClient.getApiInterface().getTopics(AppConstant.ENTERTAINMENT, 5, 0);
                         } else {
                             return RetrofitApiClient.getApiInterface().getTopics(AppConstant.SPORTS, 5, 0);
                         }
@@ -660,11 +679,16 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
                         newresults.add(singleList.get(4));
                         results.clear();
                         results.addAll(newresults);
-                        if (progressDialog!= null && progressDialog.isShowing())
+                        if (progressDialog != null && progressDialog.isShowing())
                             hideProgress();
                         if (errorLayout.getVisibility() == View.VISIBLE)
                             errorLayout.setVisibility(View.GONE);
-                        adapter.addAllNewData(results);
+                        // if next api is running then these data will not be updated
+                        if (!isRunningNextApi) {
+                            adapter.addAllNewData(results);
+//                            footerText.setText(footerString);
+//                            footerText.setVisibility(View.VISIBLE);
+                        }
                         mSwipeRefreshLayout.setRefreshing(false);
                     }
 
@@ -688,5 +712,27 @@ public class HomeFragmentTwo extends Fragment implements PaginationAdapterCallba
     @Override
     public void onRefresh() {
         callChainApi();
+    }
+
+    public String getdateInBangla(String string)
+    {
+        Character bangla_number[]={'০','১','২','৩','৪','৫','৬','৭','৮','৯'};
+        Character eng_number[]={'0','1','2','3','4','5','6','7','8','9'};
+        String values = "";
+        char[] character = string.toCharArray();
+        for (int i=0; i<character.length ; i++) {
+            Character c = ' ';
+            for (int j = 0; j < eng_number.length; j++) {
+                if(character[i]==eng_number[j])
+                {
+                    c=bangla_number[j];
+                    break;
+                }else {
+                    c=character[i];
+                }
+            }
+            values=values + c;
+        }
+        return values;
     }
 }
