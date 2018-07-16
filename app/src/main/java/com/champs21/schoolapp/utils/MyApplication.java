@@ -43,6 +43,7 @@ public class MyApplication extends Application {
         //DBManager.initializeInstance();
         mInstance = this;
         context = this;
+        MultiDex.install(this);
     }
 
     public void dbInitialize(){
